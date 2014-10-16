@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="well-lg"><span class="col-lg-2">Pekoe</span> <a href="/#/logout" title="Logout"
+                                                                class="fa fa-border fa-sign-out pull-right"></a></div>
+</div>
+<div id="content-row" class="row"><!-- contains the Nav and the Content -->
+    <script id="items_renderer.html" type="text/ng-template">
+        <div ui-tree-handle class="ng-scope ng-binding angular-ui-tree-handle">
+            <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+            {{item.title}}
+            <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+        <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}">
+            <li ng-repeat="item in item.items" ui-tree-node ng-include="'items_renderer.html'">
+            </li>
+        </ol>
+    </script>
+
+    <!-- ******************************************************************** CONTENT PANEL ******************************************** -->
+    <div id="content">
+        <div id="bag" class="ui-corner-top"><!-- ******************* New Template Panel *********************** -->
+            <div id="bagHomeRow">
+                <div id="bagstart" class="folder" style="float: left; width: 64.4em;">Templates</div>
+            </div>
+            <div id="bagNav" style="clear:both;"></div>
+            <!-- clear the floats above -->
+            <div id="templateItems"></div>
+        </div>
+        <div id="work-area"><!-- UL is for the Main TAB interface  -->
+            <ul></ul>
+            <div id="tabcontentshadow"></div>
+            <div>Content</div>
+        </div>
+    </div>
+    <!-- end #content -->
+</div>
+
+<div id="footer" class="row">
+    <div id="hints">Tea for tasks</div>
+    <div id="status"></div>
+    <div class="" id="tx-detail"></div>
+</div><!-- end #footer -->
+

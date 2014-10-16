@@ -1,0 +1,5 @@
+<div ng-controller="TenantCtrl as tcl">
+    <select ng-model="myTenant" ng-options="t as t.name for t in tcl.tenants" required="required" ng-change="tcl.changeTenant(myTenant)">
+        <option value="">-- choose tenant--</option>
+    </select>
+</div>

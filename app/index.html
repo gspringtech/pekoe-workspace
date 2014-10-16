@@ -1,0 +1,117 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/simple-sidebar.css">
+    <link rel="stylesheet" href="styles/pekoe.css">
+     <!-- endbuild -->
+  </head>
+  <body ng-app="pekoeWorkspaceApp">
+    <!-- Add your site or application content here -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="checkbox" class="navbar-toggle collapsed" ng-click="toggled = (toggled === 'toggled') ? '' : 'toggled'">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="brand">Pekoe</span>
+
+                <a href="/#/logout" title="Logout"
+                                          class="fa fa-border fa-sign-out pull-right"></a>
+            </div>
+        </div>
+    </nav>
+    <div id="wrapper" ng-class="[toggled]">
+        <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bk">
+            <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
+            <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
+            <ul ng-model="bk.list" class="sidebar-nav">
+
+
+                <li ng-repeat="item in bk.list">
+                    <div><a href="#">{{item.title}}</a></div>
+                    <ul ng-model="item.items">
+                        <li ng-repeat="subitem in item.item"><a ng-href="{{subitem.href}}" >{{subitem.title}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+
+
+
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" ng-view="">
+                        <h1>Pekoe Workspace</h1>
+                        <p>Please login</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/bookmarks.js"></script>
+        <script src="scripts/services/authinterceptor.js"></script>
+        <script src="scripts/controllers/auth.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
+        <script src="scripts/services/prefsservice.js"></script>
+        <script src="scripts/controllers/tenant.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
