@@ -27,7 +27,7 @@ angular.module('pekoeWorkspaceApp')
                 console.log('setTenant got single tenant:',myTenant.key);
                 $http.defaults.headers.common.tenant = myTenant.key;
                 //$rootScope.$broadcast('tenant.update');
-                // I feel this could be done better - but it works
+                // I feel this could be done better - but it works -sort of.
                 return getBookmarks();
             }
             // reject
@@ -37,10 +37,16 @@ angular.module('pekoeWorkspaceApp')
             return $http.get('/exist/restxq/pekoe/user/bookmarks');
         }
 
+        // TODO setBookmarks is being called without a 'resp' from somewhere. Fix this.
         function setBookmarks(resp) {
-            console.log('setting values in PrefsService',resp.data.item);
-            myBookmarks = (resp.data.item) ? resp.data.item : {};
+            if (!resp) {
+                console.warn('prefsService setBookmarks NO RESP');
+                return;
+            }
+//            console.log('setting values in PrefsService',resp.data.item);
+            myBookmarks = (resp.data.group) ? resp.data.group : {};
             $rootScope.$broadcast('bookmarks.update');
+            $location.path('/');
         }
 
         function reportError(resp) {
@@ -58,7 +64,7 @@ angular.module('pekoeWorkspaceApp')
         }
 
         function changeTenant (tenant) {
-            console.log('Changed tenant from',myTenant,'to',tenant);
+            console.log('Changed tenant from',myTenant.key,'to',tenant.key);
             myTenant = tenant;
             $http.defaults.headers.common.tenant = myTenant.key;
             // on change of tenant, need to reload bookmarks. HOW?
@@ -96,6 +102,7 @@ angular.module('pekoeWorkspaceApp')
                 updateMyBookmarks(b);
             },
             update: function () {
+                console.log('Someone called PrefsService.update()');
                 getBookmarks();
             },
             getUser : function () {

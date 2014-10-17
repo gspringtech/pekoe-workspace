@@ -28,8 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <span class="brand">Pekoe</span>
-
+                <span class="brand" custom-popover popover-html="The Pekoe Workspace" popover-placement="bottom" popover-label="Pekoe"></span>
                 <a ng-href="/#/logout"
                    title="Logout"
                    class="fa fa-border fa-sign-out pull-right"></a>
@@ -40,20 +39,7 @@
         <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bk">
             <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
             <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
-            <ul ng-model="bk.list" class="sidebar-nav">
-
-
-                <li ng-repeat="item in bk.list">
-                    <div><a href="#">{{item.title}}</a></div>
-                    <ul ng-model="item.items">
-                        <li ng-repeat="subitem in item.item"><a ng-href="{{subitem.href}}" >{{subitem.title}}</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-
-
-
+            <div custom-collapse ng-model="bk.list" collapse-panel-id="collapse-panel" collapse-panel-body-id="collapse-panel-body"></div>
         </div>
         <!-- /#sidebar-wrapper -->
 
@@ -104,6 +90,7 @@
     <!-- endbower -->
     <!-- endbuild -->
         <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
+        <script src="directives/directives.js"></script>
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>

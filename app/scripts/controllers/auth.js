@@ -7,30 +7,12 @@
  Include this cookie for each following request.
 
  This doesn't require SSL - but makes much more sense to use it as the passwords are sent in the clear.
- I'd prefer TOKEN based auth, but don't know how to achieve that.
 
- So the above gets you logged in. How to terminate the session? It's not enough to "lose" the sessionid.
+ Logout is a call to /exist/rest/logout.xql which simply calls session:invalidate()
 
- The process is supposed to work like this:
- - make a request to a protected resource
- - server says 302 "Found" with a redirect to j_security_check PLUS a JSESSIONID cookie
- - send jUsername and j_password AND the cookie to j_security_check (/exist/j_security_check)
- - if successful, server will send back a 302 to the original protected URL
- - BUT my auth handler doesn't do that.
-
- CURL process:
- send request for resource. 401 Unauthorized
- The problem is that it returns
- JSESSIONID=uuid; Path=/exist instead of Path=/exist/original/request
-
- Send request for resource - get 401 Unauthorized (jsessionid is invalid)
- Respond by submitting login form to j_security_check - response is 302 Found Location = /exist
- 302 handled by XHR and so /exist -> 302 /exist/ -> 302 /exist/apps/dashboard/ -> 302 /exist/apps/dashboard/index.html -> 200 OK
-
- But I don't want that! I want to interrupt the redirect.
-
- LOGOUT might be as simple as deleting the session cookie.
-
+ TODO decide what to do after logout.
+ Currently, the goodbye page shows a Login-again link which does href='/login'.
+ It doesn't hide any existing content.
  */
 
 angular.module('pekoeWorkspaceApp')

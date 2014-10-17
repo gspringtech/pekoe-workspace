@@ -7,7 +7,8 @@ angular
         'ngResource',
         'ngSanitize',
         'ngRoute',
-        'http-auth-interceptor'
+        'http-auth-interceptor',
+        'customDirectives'
 //        'ui.tree'
     ])
     .config(function ($routeProvider, $locationProvider) {
