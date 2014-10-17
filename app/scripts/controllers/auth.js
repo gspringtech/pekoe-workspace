@@ -34,7 +34,7 @@
  */
 
 angular.module('pekoeWorkspaceApp')
-    .controller('AuthCtrl', function ($scope, $http, $location) {
+    .controller('AuthCtrl', function ($scope, $http, $location, authService) {
         // TODO remove $scope
         $scope.user = {username: '', password: ''};
         $scope.message = '';
@@ -44,9 +44,7 @@ angular.module('pekoeWorkspaceApp')
                     'j_username=' + $scope.user.username + '&j_password=' + $scope.user.password,
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;'} })
                 .success(function (){ // (data, status, headers, config) {
-                    // get the cookie
-//                    console.log('AuthCtrl success for', config);
-                    $location.path('/');
+                    authService.loginConfirmed();
                 });
         };
     });

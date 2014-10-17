@@ -21,7 +21,7 @@ angular.module('pekoeWorkspaceApp')
 //            }
 //        };
 
-        function refreshBookmarks() {
+        function refreshBookmarks() { // clear bookmarks
             self.list = [];
             self.myUser = PrefsService.getUser();
             self.myTenant = PrefsService.getTenant();

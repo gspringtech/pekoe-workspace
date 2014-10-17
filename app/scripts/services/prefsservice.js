@@ -19,28 +19,18 @@ angular.module('pekoeWorkspaceApp')
             // either one tenant or a bunch. If one, it's immediately set.
             // if a bunch, then show the selector.
             myUser = resp.data.for;
-            console.log('setTenant got myUser',myUser);
             if (angular.isArray(resp.data.tenant)){
-                console.log('PrefsService setTenant got Array');
                 myTenants = resp.data.tenant;
-                $location.url('tenant');
+                $location.url('tenant'); // rely on setTenant to call getBookmarks
             } else if (resp.data.tenant.key) {
                 myTenant =  resp.data.tenant;
+                console.log('setTenant got single tenant:',myTenant.key);
                 $http.defaults.headers.common.tenant = myTenant.key;
-
+                //$rootScope.$broadcast('tenant.update');
+                // I feel this could be done better - but it works
+                return getBookmarks();
             }
-            $rootScope.$broadcast('tenant.update');
-//            myTenants = resp.data.tenant; // tenant: {key:'tdbg', name:'The Database Guy'}
-//
-//
-//
-//            $rootScope.$broadcast('tenant.update');
-//            if (myTenant = 'none' && myTenants.length > 0) {
-//                // defer the next step somehow
-//                $location.url('tenant');
-//            }
-
-            return resp;
+            // reject
         }
 
         function getBookmarks() {
@@ -60,7 +50,6 @@ angular.module('pekoeWorkspaceApp')
         function loadThings() {
             $http.get('/exist/restxq/pekoe/tenant')
                 .then(setTenant)
-                .then(getBookmarks)
                 .then(setBookmarks,reportError);
         }
 
@@ -78,6 +67,11 @@ angular.module('pekoeWorkspaceApp')
         }
 
         loadThings();
+
+        $rootScope.$on('event:auth-loginRequired',function () {
+           console.log('GOT AUTH-LOGINREQUIRED EVENT');
+            $location.path('/login');
+        });
 
 
         // Public API here

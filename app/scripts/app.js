@@ -7,9 +7,10 @@ angular
         'ngResource',
         'ngSanitize',
         'ngRoute',
+        'http-auth-interceptor'
 //        'ui.tree'
     ])
-    .config(function ($routeProvider) {
+    .config(function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
@@ -32,6 +33,7 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
+        $locationProvider.html5Mode(true);
     })
     .config(function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|collection|form|xql):/);

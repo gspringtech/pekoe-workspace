@@ -66,51 +66,28 @@ angular.module('pekoeWorkspaceApp')
     .factory('authInterceptor', ['$rootScope','$q', '$location',  function ($rootScope, $q, $location) {
         return {
             // NOTE: can intercept response, responseError, request, requestError
-            request: function (config) {
-                if (!config.headers.tenant){
-                    console.warn('No Tenant in Request Header');
-                }
-                //config.headers.tenant = PrefsService.getTenant();
-                return config;
-            },
-            // what is a requestError?
-//            request: function (config) {
-//                config.headers = config.headers || {};
-//                console.log("authInterceptor request",config.url);
-//                // Don't have to do anything - the cookie is automatically included in each request (i think)
-//                return config;
-//            },
-//            requestError: function(config) {
-//                console.log("authInterceptor REQUEST ERROR");
-//            },
+
             response: function (response) {
-                console.log('authInterceptor Response',response.status);
-              if (response.status === 204) {
-                console.log('204 RESPONSE DATA',response);
-                  var deferred = $q.defer();
-                  $location.url(response.headers('location'));
-                  return deferred.promise;
-              }
-              return response;
+                console.log('Intercept Response', response.status);
+                if (response.status === 204) { // required to login .
+                    console.log('204 RESPONSE DATA', response.data);
+//                    var deferred = $q.defer();
+                    $location.url(response.headers('location'));
+//                    return deferred.promise;
+                }
+                return response || $q.when(response);
             },
 
             responseError: function (response) {
-                console.log('authInterceptor responseERROR', response.status);
-                var deferred = $q.defer();
-                if (response.status === 401) { // user is not authorized
-//                    var deferred = $q.defer();
-//                    handle the case where the user is not authenticated
-//                    $window.location = '/#/login';
-                    $location.url('login');
-//                    $location.path('/#/login'); // this causes infinite redirection
-                    return deferred.promise;
-                } else if (response.status === 403) { // user is not authorized
+                console.log('Intercept responseERROR', response.status);
 
+                if (response.status === 403) { // user is not authorized
+                    console.log('not handle responseError 403 - you are not permitted to access that resource');
                     // handle the case where the user is not authenticated
 //                    $window.location = '/#/login';
-                    $location.url('login');
+
 //                    $location.path('/#/login'); // this causes infinite redirection
-                    return deferred.promise;
+
 
                     // MAYBE if there's
                 } else if (response.status === 412) { // Precondition Failed  - no tenant set
@@ -119,14 +96,15 @@ angular.module('pekoeWorkspaceApp')
 //                        TenantService.setTenant(tenant); // maybe don't need to do anything now.
 //                        return deferred.promise;
 //                    }
-                    console.log('412 with data?',response.data);
+
+                    console.log('not handle responseError 412 with data?',response.data);
 //                    if (response.data.tenant) {
 //                        PrefsService.setTenants(response.data.tenant);
 //                        $location.url('tenant');
 //                    }
-                    return deferred.promise;
+
                 }
-                return response;
+                return $q.reject(response);
             }
         };
 

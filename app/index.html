@@ -30,8 +30,9 @@
                 </button>
                 <span class="brand">Pekoe</span>
 
-                <a href="/#/logout" title="Logout"
-                                          class="fa fa-border fa-sign-out pull-right"></a>
+                <a ng-href="/#/logout"
+                   title="Logout"
+                   class="fa fa-border fa-sign-out pull-right"></a>
             </div>
         </div>
     </nav>
@@ -102,7 +103,7 @@
     <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
+        <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
