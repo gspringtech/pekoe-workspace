@@ -1,14 +1,14 @@
 <div class="panel-group" id="{{panelId}}">
     <div class="panel panel-default" ng-repeat-start="item in ngModel">
         <div class="panel-heading">
-            <h4 class="panel-title">
-                <a ng-click="toggleCollapsedStates($index)" href="#{{panelBaseId}}-{{$index}}">{{item.title}}</a>
+            <h4 class="panel-title" ng-click="toggleCollapsedStates($index)" href="#{{panelBaseId}}-{{$index}}">
+                {{item | xmlAttr:'title'}}
             </h4>
         </div>
         <div id="{{panelBaseId}}-{{$index}}" data-parent="#{{panelId}}" class="panel-collapse collapse">
             <div class="panel-body">
-                <ul ng-model="item.item">
-                    <li ng-repeat="subitem in item.item"><a ng-href="{{subitem.href}}" >{{subitem.title}}</a></li>
+                <ul>
+                    <li ng-repeat="subitem in item | xmlChild " ng-controller="BookmarksitemCtrl as bki"><a ng-href="{{subitem | xmlAttr: 'href'}}" >{{subitem | xmlAttr: 'title'}}</a></li>
                 </ul>
             </div>
         </div>

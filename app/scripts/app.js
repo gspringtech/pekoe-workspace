@@ -8,7 +8,8 @@ angular
         'ngSanitize',
         'ngRoute',
         'http-auth-interceptor',
-        'customDirectives'
+        'customDirectives',
+        'xml'
 //        'ui.tree'
     ])
     .config(function ($routeProvider, $locationProvider) {
@@ -41,4 +42,5 @@ angular
     })
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('authInterceptor');
+        $httpProvider.interceptors.push('xmlHttpInterceptor');
     });
