@@ -6,7 +6,6 @@ angular
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ngRoute',
         'http-auth-interceptor', // lib/angular-http-auth-master/src/http-auth-interceptor.js
         'customDirectives',
         'xml'

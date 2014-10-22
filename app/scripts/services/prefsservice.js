@@ -47,6 +47,7 @@ angular.module('pekoeWorkspaceApp')
             if (angular.isArray(resp.data.tenant)){
                 myTenants = resp.data.tenant;
                 // TODO replace location
+                $('#tenantPicker').modal('show');
 //                $location.url('tenant'); // rely on setTenant to call getBookmarks
             } else if (resp.data.tenant.key) {
                 myTenant =  resp.data.tenant;
@@ -94,6 +95,7 @@ angular.module('pekoeWorkspaceApp')
 
         function changeTenant (tenant) {
             console.log('Changed tenant from',myTenant.key,'to',tenant.key);
+            $('#tenantPicker').modal('hide');
             myTenant = tenant;
             $http.defaults.headers.common.tenant = myTenant.key;
             // on change of tenant, need to reload bookmarks. HOW?
@@ -127,6 +129,7 @@ angular.module('pekoeWorkspaceApp')
                 myTenants = tenants;
             },
             getTenants : function () {
+                console.log('you asked for these tenants',myTenants);
                 return myTenants;
             },
 
