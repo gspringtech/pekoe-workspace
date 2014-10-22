@@ -8,7 +8,7 @@
         <div id="{{panelBaseId}}-{{$index}}" data-parent="#{{panelId}}" class="panel-collapse collapse">
             <div class="panel-body">
                 <ul>
-                    <li ng-repeat="subitem in item | xmlChild " ng-controller="BookmarksitemCtrl as bki"><a ng-href="{{subitem | xmlAttr: 'href'}}" >{{subitem | xmlAttr: 'title'}}</a></li>
+                    <li ng-repeat="subitem in item | xmlChild " ng-controller="BookmarksitemCtrl as bmi"><a ng-href="{{bmi.href}}" >{{bmi.title}}</a></li>
                 </ul>
             </div>
         </div>

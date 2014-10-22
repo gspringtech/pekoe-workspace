@@ -2,15 +2,29 @@
 
 // SEE this example http://localhost/exist/apps/demo/examples/special/json.html
 // see also http://subliminalsources.com/81/angularjs-ui-component-directives/ and for Tabs too.
-
+// TODO need to reduce this to a minimal handler for the content and make eveything happen in prefsService
 angular.module('pekoeWorkspaceApp')
     .controller('BookmarksCtrl', ['$scope', '$http', 'PrefsService', function ($scope, $http, PrefsService) {
+        // possibly make this a directive with a simple controller?
     // use 'this' instead of $scope. and use BookmarksCtrl as bk in the HTML
         this.myUser = PrefsService.getUser();
         this.myTenant = PrefsService.getTenant();
         this.list = PrefsService.getBookmarks();
         var self = this;
 
+
+        function addItem() {
+            console.log('addItem called');
+            if (!self.title || self.title === '') { return; }
+            self.list.push({
+                title: self.title,
+                //content: self.content,
+                collapsed: false
+            });
+
+            self.title = '';
+            //self.content = '';
+        }
 
 //        this.changeTenant = function(myTenant){
 //            console.log('tenant changed to',myTenant);
@@ -46,6 +60,8 @@ angular.module('pekoeWorkspaceApp')
         this.toggle = function (scope) {
             scope.toggle();
         };
+
+        this.addItem = function () {addItem();};
 
         this.newSubItem = function (scope) {
             var nodeData = scope.$modelValue;

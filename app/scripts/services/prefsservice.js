@@ -1,17 +1,42 @@
 'use strict';
 
 angular.module('pekoeWorkspaceApp')
-    .factory('PrefsService', ['$http', '$rootScope', '$location', function ($http, $rootScope, $location) {
+    .factory('PrefsService', ['$http', '$rootScope', function ($http, $rootScope ) {
         // Manage tenant, user, bookmarks
       /*
       This might be easier if the response was XML. Particularly the .isArray bit.
        */
 
-        var myBookmarks = [];
+        var myBookmarks = null;
         var myUser = '';
         var myTenant = {key:'none', name:'No tenant'};
         var myTenants = [];
         $http.defaults.headers.common.tenant = myTenant.key;
+
+        function convertBookmarks() {
+            // bookmarks are xml
+            /*
+            angular won't process {{item.attr('title')}}
+            but what about a filter?
+            This is where I'm thinking maybe the proxy system could decorate the xml with accessors.
+             */
+            /*
+             <bookmarks for="tdbg@thedatabaseguy.com.au" tenant="tdbg">
+             <group title="Favourites...">
+             <item title="Welcome" href="xql:files/Welcome.xql"></item>
+             <item title="Files" href="collection:files" type="list"></item>
+             <item title="Education" href="collection:files/education" type="list"></item>
+             <item title="Booking List" href="list:files/education/Booking-list.xql" type="report"></item>
+             </group>
+             <group title="Reports...">
+             <item title="Visits" href="collection:files" type="report"></item>
+             </group>
+             </bookmarks>
+
+             */
+//            var list = [];
+            return myBookmarks;
+        }
 
         function setTenant(resp) {
             // will only get a successful response
@@ -21,7 +46,8 @@ angular.module('pekoeWorkspaceApp')
             myUser = resp.data.for;
             if (angular.isArray(resp.data.tenant)){
                 myTenants = resp.data.tenant;
-                $location.url('tenant'); // rely on setTenant to call getBookmarks
+                // TODO replace location
+//                $location.url('tenant'); // rely on setTenant to call getBookmarks
             } else if (resp.data.tenant.key) {
                 myTenant =  resp.data.tenant;
                 console.log('setTenant got single tenant:',myTenant.key);
@@ -34,6 +60,7 @@ angular.module('pekoeWorkspaceApp')
         }
 
         function getBookmarks() {
+            console.log('function getBookmarks');
             return $http.get('/exist/restxq/pekoe/user/bookmarks');
         }
 
@@ -43,10 +70,12 @@ angular.module('pekoeWorkspaceApp')
                 console.warn('prefsService setBookmarks NO RESP');
                 return;
             }
-//            console.log('setting values in PrefsService',resp.data.item);
-            myBookmarks = (resp.data.group) ? resp.data.group : {};
+//            myBookmarks = (resp.data.group) ? resp.data.group : {};
+            myBookmarks = (resp.xml) ? resp.xml.find('group') : [];
+            console.log(myBookmarks);
             $rootScope.$broadcast('bookmarks.update');
-            $location.path('/');
+            // TODO replace location
+//            $location.path('/');
         }
 
         function reportError(resp) {
@@ -74,9 +103,15 @@ angular.module('pekoeWorkspaceApp')
 
         loadThings();
 
+        $rootScope.$on('event:auth-loginConfirmed',function () {
+            console.log('Got event:auth-loginConfirmed');
+            $('#myModal').modal('hide');
+        });
+
         $rootScope.$on('event:auth-loginRequired',function () {
            console.log('GOT AUTH-LOGINREQUIRED EVENT');
-            $location.path('/login');
+//            $location.path('/login');
+            $('#myModal').modal('show');
         });
 
 
@@ -96,7 +131,7 @@ angular.module('pekoeWorkspaceApp')
             },
 
             getBookmarks: function () {
-                return myBookmarks;
+                return convertBookmarks();
             },
             setBookmarks: function (b) {
                 updateMyBookmarks(b);

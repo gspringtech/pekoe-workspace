@@ -22,13 +22,15 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="checkbox" class="navbar-toggle collapsed" ng-click="toggled = (toggled === 'toggled') ? '' : 'toggled'">
+                <button type="button" class="navbar-toggle collapsed" ng-click="toggled = (toggled === 'toggled') ? '' : 'toggled'">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <span class="brand" custom-popover popover-html="The Pekoe Workspace" popover-placement="bottom" popover-label="Pekoe"></span>
+                <!-- Button trigger modal -->
+
                 <a ng-href="/#/logout"
                    title="Logout"
                    class="fa fa-border fa-sign-out pull-right"></a>
@@ -39,7 +41,12 @@
         <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bk">
             <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
             <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
+            <div class="bg-info"><span class="h3">Bookmarks</span> <button class="pull-right"><i class="fa fa-folder-open"></i>Add</button></div>
             <div custom-collapse ng-model="bk.list" collapse-panel-id="collapse-panel" collapse-panel-body-id="collapse-panel-body"></div>
+            <div id="collapse-add-form">
+                <input ng-model="bk.title" type="text" placeholder="add new Folder">
+                <button ng-click="bk.addItem()">Add Item</button>
+            </div>
         </div>
         <!-- /#sidebar-wrapper -->
 
@@ -47,20 +54,48 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12" ng-view="">
-                        <h1>Pekoe Workspace</h1>
-                        <p>Please login</p>
+                    <div class="col-lg-12">
+                        <div id="work-area" ng-controller="WorkspacetabsCtrl"><!-- UL is for the Main TAB interface  -->
+                            <div custom-tabs tabs-base-id="content-tab" ng-model="tabsData"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
-
+        <div id="footer" class="row">
+            <div id="hints">Tea for tasks</div>
+            <div id="status"></div>
+            <div class="" id="tx-detail"></div>
+        </div><!-- end #footer -->
     </div>
     <!-- /#wrapper -->
 
 
-
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-controller="AuthCtrl">
+                        <span></span>
+                        <form ng-submit="submit()">
+                            <input ng-model="user.username" type="text" name="user" placeholder="Username" />
+                            <input ng-model="user.password" type="password" name="pass" placeholder="Password" />
+                            <button type="submit" value="Login"  class="btn btn-default" >Login</button>
+                        </form>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                <!--</div>-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
@@ -87,6 +122,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+    <script src="bower_components/angular-xml/angular-xml.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
         <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
@@ -100,6 +136,9 @@
         <script src="scripts/controllers/logout.js"></script>
         <script src="scripts/services/prefsservice.js"></script>
         <script src="scripts/controllers/tenant.js"></script>
+        <script src="scripts/filters/xmlattr.js"></script>
+        <script src="scripts/controllers/bookmarksitem.js"></script>
+        <script src="scripts/controllers/workspacetabs.js"></script>
         <!-- endbuild -->
 </body>
 </html>

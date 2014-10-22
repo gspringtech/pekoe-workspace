@@ -1,2 +1,21 @@
 // Adjustments to bootstrap and custom styles.
 .navbar { margin-bottom: 0; background-color: orange; }
+.panel-heading { padding: 0;}
+.panel-title { padding: 10px 15px;}
+
+#footer {
+  position:fixed;
+  bottom:0%;
+  text-align: right;
+  height: 28px;
+  color : #0000FF;
+  background-color: #80bbcc;
+  border-top: 1px solid #888888;
+  width: 100%;
+}
+
+
+iframe {
+  height:100%;
+  width: 100%;
+}

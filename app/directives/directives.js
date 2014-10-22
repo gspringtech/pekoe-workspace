@@ -1,5 +1,6 @@
 /**
  * Created by alisterpillow on 17/10/2014.
+ * Thanks to http://subliminalsources.com/81/angularjs-ui-component-directives/
  */
 customDirectives = angular.module('customDirectives', []);
 customDirectives.directive('customPopover', function(){
@@ -27,6 +28,10 @@ customDirectives.directive('customCollapse', function () {
         },
         restrict: 'A',
         templateUrl: 'directives/templates/bookmark-items.html',
+        controller: function ($attrs) {
+            this.atts = $attrs.getOwnPropertyNames;
+        },
+        controllerAs : 'group',
         link: function(scope, el, attrs) {
             scope.panelBaseId = attrs.collapsePanelBodyId;
             scope.panelId = attrs.collapsePanelId;
@@ -56,3 +61,54 @@ customDirectives.directive('customCollapse', function () {
         }
     };
 });
+
+customDirectives.directive('customTabs', function () {
+   return {
+       restrict: 'A',
+       require: '?ngModel',
+       scope: { ngModel: '='},
+
+       templateUrl: 'views/tabContent.html',
+       link: function (scope, el, attrs) {
+           scope.contentBaseId = attrs.tabsBaseId;
+       }
+
+   };
+});
+
+customDirectives.directive('customModals', function ($http) {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        transclude: true,
+        scope:{
+            ngModel: '='
+        },
+        template: '<div id="{{modalId}}" class="modal fade">\
+  <div class="modal-dialog">\
+    <div class="modal-content">\
+      <div class="modal-footer">\
+        {{modalContents}}\
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>\
+      </div>\
+    </div>\
+  </div>\
+</div>',
+        link: function(scope, el, attrs){
+            scope.modalId = attrs.modalId;
+
+            $http.jsonp(attrs.modalSrc); // returns a function call to ...
+
+
+            getContents = function(data){
+                scope.modalContents = data.contents; // contents = "<div id={{modalId}} class=modal fade> etc
+            };
+
+            /*
+            This script takes advantage of the $.json behaviour: when a json containing a function is loaded,
+            the script is evaluated. The source (modal-example.js) contains a call to the getContents function above
+            getContents({contents: " string "})
+            where the contents
+             */
+        }
+    }});

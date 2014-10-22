@@ -63,16 +63,17 @@ and finally return to the caller.
 
 */
 angular.module('pekoeWorkspaceApp')
-    .factory('authInterceptor', ['$rootScope','$q', '$location',  function ($rootScope, $q, $location) {
+    .factory('authInterceptor', ['$rootScope','$q',  function ($rootScope, $q) {
         return {
             // NOTE: can intercept response, responseError, request, requestError
 
             response: function (response) {
-                console.log('Intercept Response', response.status);
+                console.log('INTERCEPTING', response.config.url);
                 if (response.status === 204) { // required to login .
                     console.log('204 RESPONSE DATA', response.data);
 //                    var deferred = $q.defer();
-                    $location.url(response.headers('location'));
+                    // TODO replace location
+//                    $location.url(response.headers('location'));
 //                    return deferred.promise;
                 }
                 return response || $q.when(response);
@@ -80,17 +81,8 @@ angular.module('pekoeWorkspaceApp')
 
             responseError: function (response) {
                 console.log('Intercept responseERROR', response.status);
-
-                if (response.status === 403) { // user is not authorized
-                    console.log('not handle responseError 403 - you are not permitted to access that resource');
-                    // handle the case where the user is not authenticated
-//                    $window.location = '/#/login';
-
-//                    $location.path('/#/login'); // this causes infinite redirection
-
-
-                    // MAYBE if there's
-                } else if (response.status === 412) { // Precondition Failed  - no tenant set
+                // http-auth-interceptor will handle 401 and 403
+                if (response.status === 412) { // Precondition Failed  - no tenant set
 //                    var tenant = response.headers('tenant');
 //                    if (tenant) {
 //                        TenantService.setTenant(tenant); // maybe don't need to do anything now.

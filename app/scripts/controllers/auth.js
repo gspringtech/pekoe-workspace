@@ -16,10 +16,13 @@
  */
 
 angular.module('pekoeWorkspaceApp')
-    .controller('AuthCtrl', function ($scope, $http, $location, authService) {
+    .controller('AuthCtrl', function ($scope, $http,
+//                                      $location,
+                                      authService) {
         // TODO remove $scope
         $scope.user = {username: '', password: ''};
         $scope.message = '';
+        $('#myModal').modal('hide');
         $scope.submit = function () {
             $http
                 .post('/exist/j_security_check',

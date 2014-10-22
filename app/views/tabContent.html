@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs">
+    <li ng-class="{active: item.active}" ng-repeat="item in ngModel" ><a data-toggle="tab" data-target="#{{contentBaseId}}-1">{{item.title}}</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane" ng-class="{active: item.active}" ng-repeat="item in ngModel" id="{{contentBaseId}}-{{$index}}">
+        <iframe ng-src="{{item.href}}" ></iframe>
+    </div>
+</div>
