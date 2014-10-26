@@ -4,10 +4,8 @@
 // When a tab is opened or closed, the Service will broadcast a message
 // FRAMES with angular - useful answer here: http://stackoverflow.com/questions/18437594/angularjs-call-other-scope-which-in-iframe
 
-angular.module('pekoeWorkspaceApp')
-  .controller('WorkspacetabsCtrl', ['PrefsService','$scope', function (PrefsService, $scope) {
-        var tenant = PrefsService.getTenant().key;
-        console.log('tenant',tenant);
+angular.module('pekoeWorkspaceApp.tabs')
+  .controller('WorkspacetabsCtrl', ['BookmarksService','$scope', function (BookmarksService, $scope) {
 
         // thanks to http://odetocode.com/blogs/scott/archive/2013/08/14/dynamic-tabs-with-angularjs-and-ui-bootstrap.aspx
     var setAllInactive = function() {
@@ -17,12 +15,12 @@ angular.module('pekoeWorkspaceApp')
         };
 
     $scope.tabsData = [
-        {
-            title:'Welcome',
-            content:'Lorem ipsum dolor sit amet, consectetuer adipiscing elit',
-            href: '/exist/restxq/pekoe/welcome',
-            active: true
-        }
+//        {
+//            title:'Welcome',
+//            content:'Lorem ipsum dolor sit amet, consectetuer adipiscing elit mafiosa',
+//            href: '/exist/restxq/pekoe/welcome',
+//            active: true
+//        }
 //        ,
 //        {
 //            title:'Files',

@@ -36,7 +36,32 @@
       loginCancelled: function(data, reason) {
         httpBuffer.rejectAll(reason);
         $rootScope.$broadcast('event:auth-loginCancelled', data);
-      }
+      },
+        /**
+         * Call this function to indicate that authentication was successful and trigger a
+         * retry of all deferred requests.
+         * @param data an optional argument to pass on to $broadcast which may be useful for
+         * example if you need to pass through details of the user that was logged in
+         * @param configUpdater an optional transformation function that can modify the
+         * requests that are retried after having logged in.  This can be used for example
+         * to add an authentication token.  It must return the request.
+         */
+        tenantConfirmed: function(data, configUpdater) {
+            var updater = configUpdater || function(config) {return config;};
+            $rootScope.$broadcast('event:auth-tenantConfirmed', data);
+            httpBuffer.retryAll(updater);
+        },
+
+        /**
+         * Call this function to indicate that authentication should not proceed.
+         * All deferred requests will be abandoned or rejected (if reason is provided).
+         * @param data an optional argument to pass on to $broadcast.
+         * @param reason if provided, the requests are rejected; abandoned otherwise.
+         */
+        tenantCancelled: function(data, reason) {
+            httpBuffer.rejectAll(reason);
+            $rootScope.$broadcast('event:auth-tenantCancelled', data);
+        }
     };
   }])
 
@@ -61,6 +86,11 @@
               case 403:
                 $rootScope.$broadcast('event:auth-forbidden', rejection);
                 break;
+              case 412: // pre-condition failed. (in this case, I'm using it to indicate that there's no tenant
+                var deferred = $q.defer();
+                httpBuffer.append(rejection.config, deferred);
+                $rootScope.$broadcast('event:auth-tenantRequired', rejection);
+                return deferred.promise;
             }
           }
           // otherwise, default behaviour

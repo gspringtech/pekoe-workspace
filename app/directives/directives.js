@@ -68,7 +68,7 @@ customDirectives.directive('customTabs', function () {
        require: '?ngModel',
        scope: { ngModel: '='},
 
-       templateUrl: 'views/tabContent.html',
+       templateUrl: 'pekoe_tabs/tabContent.html',
        link: function (scope, el, attrs) {
            scope.contentBaseId = attrs.tabsBaseId;
        }

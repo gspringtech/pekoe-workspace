@@ -1,17 +1,21 @@
 'use strict';
 
-angular.module('pekoeWorkspaceApp')
-    .factory('PrefsService', ['$http', '$rootScope', function ($http, $rootScope ) {
-        // Manage tenant, user, bookmarks
-      /*
-      This might be easier if the response was XML. Particularly the .isArray bit.
-       */
+angular.module('pekoeWorkspaceApp.bookmarks')
+    .factory('BookmarksService', ['$http', '$rootScope','AuthService', function ($http, $rootScope, AuthService ) {
+        // Load and manage User bookmarks.
+        // will provide
+        // get
+        // add
+        // delete
+        // move
 
-        var myBookmarks = null;
-        var myUser = '';
-        var myTenant = {key:'none', name:'No tenant'};
-        var myTenants = [];
-        $http.defaults.headers.common.tenant = myTenant.key;
+        // This service will ask for the user's bookmarks.
+        // First, it will
+        // If there's no user (not logged in) then AuthService will fire
+
+
+        var myBookmarks = [];
+
 
         function convertBookmarks() {
             // bookmarks are xml
@@ -38,6 +42,7 @@ angular.module('pekoeWorkspaceApp')
             return myBookmarks;
         }
 
+/*
         function setTenant(resp) {
             // will only get a successful response
             console.log('setTenant got data');
@@ -47,7 +52,7 @@ angular.module('pekoeWorkspaceApp')
             if (angular.isArray(resp.data.tenant)){
                 myTenants = resp.data.tenant;
                 // TODO replace location
-                $('#tenantPicker').modal('show');
+                angular.element('#tenantPicker').modal('show');
 //                $location.url('tenant'); // rely on setTenant to call getBookmarks
             } else if (resp.data.tenant.key) {
                 myTenant =  resp.data.tenant;
@@ -59,67 +64,71 @@ angular.module('pekoeWorkspaceApp')
             }
             // reject
         }
+        */
+
+        $rootScope.$on('tenant.update',function (){
+            getBookmarks();
+        });
 
         function getBookmarks() {
             console.log('function getBookmarks');
-            return $http.get('/exist/restxq/pekoe/user/bookmarks');
+
+//            if (AuthService.tenant.key === 'none') {
+//                return $http.get('')
+//
+//            }
+            return $http.get('/exist/restxq/pekoe/user/bookmarks').then(setBookmarks,reportError);
         }
 
         // TODO setBookmarks is being called without a 'resp' from somewhere. Fix this.
         function setBookmarks(resp) {
             if (!resp) {
-                console.warn('prefsService setBookmarks NO RESP');
+                console.warn('BookmarksService setBookmarks NO RESP');
                 return;
             }
 //            myBookmarks = (resp.data.group) ? resp.data.group : {};
             myBookmarks = (resp.xml) ? resp.xml.find('group') : [];
             console.log(myBookmarks);
             $rootScope.$broadcast('bookmarks.update');
+
             // TODO replace location
 //            $location.path('/');
         }
 
         function reportError(resp) {
-            console.warn('PrefsService ERROR:',resp);
+            console.warn('BookmarksService ERROR:',resp);
         }
 
         function loadThings() {
-            $http.get('/exist/restxq/pekoe/tenant')
-                .then(setTenant)
-                .then(setBookmarks,reportError);
+            // check to see if a tenant has been set.
+            console.log('BookmarksService loadThings')
+            AuthService.getTenant().then(getBookmarks); // don't proceed otherwise
+//            getBookmarks();
         }
 
         function updateMyBookmarks(b) {
             console.log('you want to update prefService Bookmarks',b);
         }
+/*
 
         function changeTenant (tenant) {
             console.log('Changed tenant from',myTenant.key,'to',tenant.key);
-            $('#tenantPicker').modal('hide');
+            angular.element('#tenantPicker').modal('hide');
             myTenant = tenant;
             $http.defaults.headers.common.tenant = myTenant.key;
             // on change of tenant, need to reload bookmarks. HOW?
             $rootScope.$broadcast('tenant.update');
             getBookmarks().then(setBookmarks);
         }
+*/
 
-        loadThings();
+      //  loadThings(); // this is my call to get things started.
 
-        $rootScope.$on('event:auth-loginConfirmed',function () {
-            console.log('Got event:auth-loginConfirmed');
-            $('#myModal').modal('hide');
-        });
-
-        $rootScope.$on('event:auth-loginRequired',function () {
-           console.log('GOT AUTH-LOGINREQUIRED EVENT');
-//            $location.path('/login');
-            $('#myModal').modal('show');
-        });
 
 
         // Public API here
         return  {
-            getTenant: function () {
+/*            getTenant: function () {
                 return myTenant;
             },
             setTenant: function (tenant) { // view controller TenantCtrl will call this when the user selects a tenant
@@ -131,7 +140,7 @@ angular.module('pekoeWorkspaceApp')
             getTenants : function () {
                 console.log('you asked for these tenants',myTenants);
                 return myTenants;
-            },
+            },*/
 
             getBookmarks: function () {
                 return convertBookmarks();
@@ -140,12 +149,13 @@ angular.module('pekoeWorkspaceApp')
                 updateMyBookmarks(b);
             },
             update: function () {
-                console.log('Someone called PrefsService.update()');
+                console.log('Someone called BookmarksService.update()');
                 getBookmarks();
-            },
-            getUser : function () {
-                return myUser;
             }
+//            ,
+//            getUser : function () {
+//                return myUser;
+//            }
 
         };
     }]);

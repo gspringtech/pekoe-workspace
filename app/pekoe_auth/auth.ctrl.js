@@ -16,13 +16,10 @@
  */
 
 angular.module('pekoeWorkspaceApp')
-    .controller('AuthCtrl', function ($scope, $http,
-//                                      $location,
-                                      authService) {
-        // TODO remove $scope
+    .controller('AuthCtrl',['$scope', '$http','$modal','AuthService','authService' ,function ($scope, $http, $modal, AuthService,authService) {
         $scope.user = {username: '', password: ''};
         $scope.message = '';
-        $('#myModal').modal('hide');
+        angular.element('#myModal').modal('hide');
         $scope.submit = function () {
             $http
                 .post('/exist/j_security_check',
@@ -32,7 +29,7 @@ angular.module('pekoeWorkspaceApp')
                     authService.loginConfirmed();
                 });
         };
-    });
+    }]);
 
 /*
  NOTE: FRIDAY 3rd - See page 172 ng-book. "Note that if the response results in a redirect, the XMLHttpRequest will follow

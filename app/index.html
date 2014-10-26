@@ -11,6 +11,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/bootstrap.min.css"/>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
@@ -37,13 +38,31 @@
         </div>
     </nav>
     <div id="wrapper" ng-class="[toggled]">
-        <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bk">
+        <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
             <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
             <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
-            <div class="bg-info"><span class="h3">Bookmarks</span> <button class="pull-right"><i class="fa fa-folder-open"></i>Add</button></div>
-            <div custom-collapse ng-model="bk.list" collapse-panel-id="collapse-panel" collapse-panel-body-id="collapse-panel-body"></div>
+            <h2>
+                <span>Bookmarks</span>
+                <button class="small pull-right">
+                    <span class="fa-stack">
+                        <i class="fa fa-folder-o fa-stack-2x"></i>
+                        <i class="fa fa-plus fa-stack-1x"></i>
+                    </span>
+                    </button>
+            </h2>
+
+            <accordion close-others="oneAtATime">
+                <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
+                    <accordion-group heading="{{group | xmlAttr:'title'}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
+                        <ul ui-sortable="bgc.sortableOptions" ng-model="bgc.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc">
+                            <li class="btn btn-default btn-block" ng-repeat="subitem in bgc.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()">{{bmi.title}}</li>
+                        </ul>
+                    </accordion-group>
+                </div>
+            </accordion>
+
             <div id="collapse-add-form">
-                <input ng-model="bk.title" type="text" placeholder="add new Folder">
+                <input ng-model="bk.title" type="text" placeholder="Bookmarks folder name">
                 <button ng-click="bk.addItem()">Add Item</button>
             </div>
         </div>
@@ -54,9 +73,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div id="work-area" ng-controller="WorkspacetabsCtrl"><!-- UL is for the Main TAB interface  -->
-                            <div custom-tabs tabs-base-id="content-tab" ng-model="tabsData"></div>
+                        <div id="work-area" ng-controller="WorkspacetabsCtrl">
+                            <tabset>
+                                <tab ng-repeat="tab in tabsData" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                                    {{tab.content}}
+                                </tab>
+
+                            </tabset>
                         </div>
+                        <!--<div id="work-area" ng-controller="WorkspacetabsCtrl">&lt;!&ndash; UL is for the Main TAB interface  &ndash;&gt;-->
+                            <!--<div custom-tabs tabs-base-id="content-tab" ng-model="tabsData"></div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -71,51 +98,6 @@
     <!-- /#wrapper -->
 
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    <div ng-controller="AuthCtrl">
-                        <span></span>
-                        <form ng-submit="submit()">
-                            <input ng-model="user.username" type="text" name="user" placeholder="Username" />
-                            <input ng-model="user.password" type="password" name="pass" placeholder="Password" />
-                            <button type="submit" value="Login"  class="btn btn-default" >Login</button>
-                        </form>
-                    </div>
-                </div>
-                <!--<div class="modal-footer">-->
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                <!--</div>-->
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <div class="modal fade" id="tenantPicker" tabindex="-1" role="dialog" aria-labelledby="tentantPickerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    <div ng-controller="TenantCtrl as tcl">
-                        <select ng-model="myTenant" ng-options="t as t.name for t in tcl.tenants" required="required" ng-change="tcl.changeTenant(myTenant)">
-                            <option value="">-- choose tenant--</option>
-                        </select>
-                    </div>
-                </div>
-                <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                <!--</div>-->
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
@@ -125,38 +107,34 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/alert.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/button.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/carousel.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tab.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/transition.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js"></script>
-    <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-xml/angular-xml.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
         <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
-        <script src="directives/directives.js"></script>
+        <script src="lib/sortable.js"></script>
+        <!--<script src="directives/directives.js"></script>-->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="pekoe_auth/auth.module.js"></script>
+        <script src="pekoe_bookmarks/bookmarks.module.js"></script>
+        <script src="pekoe_tabs/tabs.module.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/bookmarks.js"></script>
-        <script src="scripts/services/authinterceptor.js"></script>
-        <script src="scripts/controllers/auth.js"></script>
-        <script src="scripts/controllers/logout.js"></script>
-        <script src="scripts/services/prefsservice.js"></script>
-        <script src="scripts/controllers/tenant.js"></script>
+        <script src="pekoe_bookmarks/bookmarks.ctrl.js"></script>
+        <!--<script src="pekoe_auth/auth.interceptor.js"></script>-->
+        <script src="pekoe_auth/auth.service.js"></script>
+        <script src="pekoe_auth/auth.ctrl.js"></script>
+        <script src="pekoe_auth/logout.js"></script>
+        <script src="pekoe_bookmarks/bookmarks.service.js"></script>
+        <script src="pekoe_auth/tenant.js"></script>
         <script src="scripts/filters/xmlattr.js"></script>
-        <script src="scripts/controllers/bookmarksitem.js"></script>
-        <script src="scripts/controllers/workspacetabs.js"></script>
+        <script src="pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
+        <script src="pekoe_tabs/workspacetabs.js"></script>
         <!-- endbuild -->
 </body>
 </html>
