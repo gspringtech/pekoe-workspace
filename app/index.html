@@ -11,7 +11,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles/bootstrap.css"/>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
@@ -43,27 +43,28 @@
             <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
             <h2>
                 <span>Bookmarks</span>
-                <button class="small pull-right">
-                    <span class="fa-stack">
-                        <i class="fa fa-folder-o fa-stack-2x"></i>
-                        <i class="fa fa-plus fa-stack-1x"></i>
-                    </span>
-                    </button>
+                <button class="small pull-right" ng-click="bc.save()">
+                    <span class="glyphicon glyphicon-save"></span>
+                </button>
+
             </h2>
 
             <accordion close-others="oneAtATime">
                 <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
-                    <accordion-group heading="{{group | xmlAttr:'title'}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
-                        <ul ui-sortable="bgc.sortableOptions" ng-model="bgc.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc">
-                            <li class="btn btn-default btn-block" ng-repeat="subitem in bgc.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()">{{bmi.title}}</li>
+                    <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
+                        <ul ui-sortable="bgc.sortableOptions" ng-model="group.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc">
+                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()">{{bmi.title}}</li>
                         </ul>
                     </accordion-group>
                 </div>
             </accordion>
 
             <div id="collapse-add-form">
-                <input ng-model="bk.title" type="text" placeholder="Bookmarks folder name">
-                <button ng-click="bk.addItem()">Add Item</button>
+                <input ng-model="bc.title" type="text" placeholder="Bookmarks folder name">
+                <button ng-click="bc.addGroup()"> <span class="fa-stack">
+                        <i class="fa fa-folder-o fa-stack-2x"></i>
+                        <i class="fa fa-plus fa-stack"></i>
+                    </span></button>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -75,8 +76,10 @@
                     <div class="col-lg-12">
                         <div id="work-area" ng-controller="WorkspacetabsCtrl">
                             <tabset>
-                                <tab ng-repeat="tab in tabsData" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-                                    {{tab.content}}
+                                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                                    <div>{{tab.title}}: {{tab.href}}</div>
+                                    <iframe ng-src="{{tab.href | trustedUrl}}" class="container"></iframe>
+
                                 </tab>
 
                             </tabset>
@@ -114,6 +117,7 @@
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/autofill-event/src/autofill-event.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
         <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
@@ -134,6 +138,7 @@
         <script src="pekoe_auth/tenant.js"></script>
         <script src="scripts/filters/xmlattr.js"></script>
         <script src="pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
+        <script src="pekoe_tabs/tabs.service.js"></script>
         <script src="pekoe_tabs/workspacetabs.js"></script>
         <!-- endbuild -->
 </body>

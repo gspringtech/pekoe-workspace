@@ -16,5 +16,12 @@ angular.module('pekoeWorkspaceApp')
         };
     });
 
+angular.module('pekoeWorkspaceApp')
+    .filter('trustedUrl',['$sce', function ($sce){
+        return function (val){
+            return $sce.trustAsResourceUrl('/exist/restxq/' + val);
+        };
+    }]);
+
 // but probably better to try this ...
 // http://www.bennadel.com/blog/2450-using-ngcontroller-with-ngrepeat-in-angularjs.htm

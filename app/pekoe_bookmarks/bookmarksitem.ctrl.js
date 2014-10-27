@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('pekoeWorkspaceApp')
-  .controller('BookmarksitemCtrl', ['$scope', function ($scope) {
+angular.module('pekoeWorkspaceApp.bookmarks')
+  .controller('BookmarksitemCtrl', ['$scope','TabsService', function ($scope, TabsService) {
         // use BookmarksitemCtrl as bki
         // and then use this. to hide non-essential scope parts
 //   console.log('scope' ,$scope);
@@ -17,7 +17,7 @@ angular.module('pekoeWorkspaceApp')
          */
 
         this.click = function (){
-//            console.log('clc me',myItem);
+            TabsService.add(this);
         }
         var myItem = angular.element($scope.subitem);
 //        console.log('bookmarksItemCtrl my item is',myItem)
@@ -25,7 +25,7 @@ angular.module('pekoeWorkspaceApp')
         this.href = myItem.attr('href');
   }]);
 
-angular.module('pekoeWorkspaceApp')
+angular.module('pekoeWorkspaceApp.bookmarks')
     .controller('BookmarksGroupCtrl', ['$scope', function ($scope) {
         // use BookmarksitemCtrl as bki
         // and then use this. to hide non-essential scope parts
@@ -35,7 +35,7 @@ angular.module('pekoeWorkspaceApp')
 //   console.log('scope' ,$scope); // as above
         var self = this;
         this.sortableOptions = {
-            update: function(e, ui) { console.log('BGC got update',e,ui, self.items); },
+            update: function(e, ui) { console.log('BGC got update',e,ui, $scope.items); },
             axis: 'y',
             tolerance:'pointer',
             connectWith: '.bookmarks-container'
@@ -43,7 +43,7 @@ angular.module('pekoeWorkspaceApp')
         // Okay - the order of this list is being changed by sorting, but it's not changing the XML
         // So either I must mimic the xml completely, or store and use JSON.
         // That would certainly be easier I think.
-        this.items = angular.element($scope.group).children('item');
+//        this.items = angular.element($scope.group).children('item');
 //        console.log("ITEMS IN THIS GROUP:",this.items);
 
     }]);

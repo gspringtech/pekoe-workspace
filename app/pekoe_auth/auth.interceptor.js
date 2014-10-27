@@ -62,7 +62,7 @@ then ask for the bookmarks
 and finally return to the caller.
 
 */
-angular.module('pekoeWorkspaceApp')
+angular.module('pekoeWorkspaceApp.auth')
     .factory('authInterceptor', ['$rootScope','$q',  function ($rootScope, $q) {
         return {
             // NOTE: can intercept response, responseError, request, requestError

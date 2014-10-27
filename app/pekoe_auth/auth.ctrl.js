@@ -15,7 +15,7 @@
  It doesn't hide any existing content.
  */
 
-angular.module('pekoeWorkspaceApp')
+angular.module('pekoeWorkspaceApp.auth')
     .controller('AuthCtrl',['$scope', '$http','$modal','AuthService','authService' ,function ($scope, $http, $modal, AuthService,authService) {
         $scope.user = {username: '', password: ''};
         $scope.message = '';
