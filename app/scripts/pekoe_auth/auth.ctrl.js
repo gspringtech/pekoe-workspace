@@ -30,12 +30,3 @@ angular.module('pekoeWorkspaceApp.auth')
                 });
         };
     }]);
-
-/*
- NOTE: FRIDAY 3rd - See page 172 ng-book. "Note that if the response results in a redirect, the XMLHttpRequest will follow
- it ,and the error callback will not be called."
- HOW DO I STOP THIS?
-
- It appears that the redirect behaviour cannot be stopped. SO must send the correct URL in the first case - simply appending j_sec
-
- */

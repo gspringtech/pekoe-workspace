@@ -41,19 +41,35 @@
         <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
             <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
             <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
-            <h2>
+            <div class="h2">
                 <span>Bookmarks</span>
-                <button class="small pull-right" ng-click="bc.save()">
-                    <span class="glyphicon glyphicon-save"></span>
+                <!--<button class="small pull-right" ng-click="bc.edit()">-->
+                    <!--<span class="glyphicon glyphicon-edit"></span>-->
+                <!--</button>-->
+                <!--<button class="small pull-right" ng-click="bc.save()">-->
+                    <!--<span class="glyphicon glyphicon-save"></span>-->
+                <!--</button>-->
+                <div class="pull-right btn-group" dropdown>
+                <button type="button" class="btn btn-danger dropdown-toggle">
+                    <span class="caret"></span>
+                    <span class="sr-only">Split button!</span>
                 </button>
-
-            </h2>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="bc.edit()">Re-order or delete</a></li>
+                    <li><a ng-click="bc.cancelEdit()">Cancel edit mode</a></li>
+                    <li><a ng-click="bc.save()">Save changes</a></li>
+                </ul>
+            </div>
+            </div>
 
             <accordion close-others="oneAtATime">
                 <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
                     <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
                         <ul ui-sortable="bgc.sortableOptions" ng-model="group.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc">
-                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()">{{bmi.title}}</li>
+                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()" title="{{bmi.href}}">
+                                {{bmi.title}}
+                                <button class="pull-right" ng-if="bc.editmode" ng-click="bc.deleteMe(subitem)">X</button>
+                            </li>
                         </ul>
                     </accordion-group>
                 </div>
@@ -71,31 +87,24 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div id="work-area" ng-controller="WorkspacetabsCtrl">
-                            <tabset>
-                                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-                                    <div>{{tab.title}}: {{tab.href}}</div>
-                                    <iframe ng-src="{{tab.href | trustedUrl}}" class="container"></iframe>
+            <div id="work-area" ng-controller="TabsCtrl" resize>
+                <tabset>
+                    <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                        <iframe ng-src="{{tab.href | trustedUrl}}" pekoe-frame class="pekoeFrame"></iframe>
+                        <!--<pekoe-frame tab="{{tab}}" />-->
 
-                                </tab>
 
-                            </tabset>
-                        </div>
-                        <!--<div id="work-area" ng-controller="WorkspacetabsCtrl">&lt;!&ndash; UL is for the Main TAB interface  &ndash;&gt;-->
-                            <!--<div custom-tabs tabs-base-id="content-tab" ng-model="tabsData"></div>-->
-                        <!--</div>-->
-                    </div>
-                </div>
+                    </tab>
+
+                </tabset>
             </div>
+
         </div>
         <!-- /#page-content-wrapper -->
         <div id="footer" class="row">
             <div id="hints">Tea for tasks</div>
-            <div id="status"></div>
-            <div class="" id="tx-detail"></div>
+            <div id="status">Status</div>
+            <div class="" id="tx-detail">Something else</div>
         </div><!-- end #footer -->
     </div>
     <!-- /#wrapper -->
@@ -120,26 +129,27 @@
     <script src="bower_components/autofill-event/src/autofill-event.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-        <script src="lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
-        <script src="lib/sortable.js"></script>
-        <!--<script src="directives/directives.js"></script>-->
+
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="pekoe_auth/auth.module.js"></script>
-        <script src="pekoe_bookmarks/bookmarks.module.js"></script>
-        <script src="pekoe_tabs/tabs.module.js"></script>
+        <script src="scripts/lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
+        <script src="scripts/lib/sortable.js"></script>
+        <script src="scripts/pekoe_auth/auth.module.js"></script>
+        <script src="scripts/pekoe_bookmarks/bookmarks.module.js"></script>
+        <script src="scripts/pekoe_tabs/tabs.module.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="pekoe_bookmarks/bookmarks.ctrl.js"></script>
-        <!--<script src="pekoe_auth/auth.interceptor.js"></script>-->
-        <script src="pekoe_auth/auth.service.js"></script>
-        <script src="pekoe_auth/auth.ctrl.js"></script>
-        <script src="pekoe_auth/logout.js"></script>
-        <script src="pekoe_bookmarks/bookmarks.service.js"></script>
-        <script src="pekoe_auth/tenant.js"></script>
-        <script src="scripts/filters/xmlattr.js"></script>
-        <script src="pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
-        <script src="pekoe_tabs/tabs.service.js"></script>
-        <script src="pekoe_tabs/workspacetabs.js"></script>
+        <script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
+        <script src="scripts/pekoe_auth/auth.service.js"></script>
+        <script src="scripts/pekoe_auth/auth.ctrl.js"></script>
+        <script src="scripts/pekoe_auth/logout.js"></script>
+        <script src="scripts/pekoe_bookmarks/bookmarks.service.js"></script>
+        <script src="scripts/pekoe_auth/tenant.ctrl.js"></script>
+        <script src="scripts/filters/filters.js"></script>
+        <script src="scripts/pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
+        <script src="scripts/pekoe_tabs/tabs.service.js"></script>
+        <script src="scripts/pekoe_tabs/tabs.ctrl.js"></script>
+        <script src="scripts/pekoe_tabs/pekoe-frame.directive.js"></script>
+        <script src="scripts/directives/resize.js"></script>
         <!-- endbuild -->
 </body>
 </html>

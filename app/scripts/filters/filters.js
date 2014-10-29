@@ -19,6 +19,10 @@ angular.module('pekoeWorkspaceApp')
 angular.module('pekoeWorkspaceApp')
     .filter('trustedUrl',['$sce', function ($sce){
         return function (val){
+            if (val === '/') {
+                console.log('going to set url to /list');
+                return $sce.trustAsResourceUrl('/list');
+            }
             return $sce.trustAsResourceUrl('/exist/restxq/' + val);
         };
     }]);

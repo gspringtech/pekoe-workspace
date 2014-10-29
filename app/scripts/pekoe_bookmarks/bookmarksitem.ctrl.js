@@ -18,7 +18,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
 
         this.click = function (){
             TabsService.add(this);
-        }
+        };
         var myItem = angular.element($scope.subitem);
 //        console.log('bookmarksItemCtrl my item is',myItem)
         this.title = myItem.attr('title');
@@ -33,13 +33,14 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         // bgc=BookmarksGroupCtrl, bc=BookmarksCtrl, group, oneAtATime
         // bgc is this controller
 //   console.log('scope' ,$scope); // as above
-        var self = this;
+//        var self = this;
         this.sortableOptions = {
             update: function(e, ui) { console.log('BGC got update',e,ui, $scope.items); },
             axis: 'y',
             tolerance:'pointer',
+            disabled: !this.editmode,
             connectWith: '.bookmarks-container'
-        }
+        };
         // Okay - the order of this list is being changed by sorting, but it's not changing the XML
         // So either I must mimic the xml completely, or store and use JSON.
         // That would certainly be easier I think.

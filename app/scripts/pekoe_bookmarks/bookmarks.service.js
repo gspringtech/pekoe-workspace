@@ -13,7 +13,8 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         // First, it will
         // If there's no user (not logged in) then AuthService will fire
 
-
+        var myTenant = AuthService.getTenant(); // this is a bootstrapping call.
+        console.log('myTenant',myTenant);
         var myBookmarks = {groups:[]};
 
 
@@ -50,12 +51,12 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             console.warn('BookmarksService ERROR:',resp);
         }
 
-        function loadThings() {
-            // check to see if a tenant has been set.
-            console.log('BookmarksService loadThings')
-            AuthService.getTenant().then(getBookmarks); // don't proceed otherwise
-//            getBookmarks();
-        }
+//        function loadThings() {
+//            // check to see if a tenant has been set.
+//            console.log('BookmarksService loadThings');
+//            AuthService.getTenant().then(getBookmarks); // don't proceed otherwise
+////            getBookmarks();
+//        }
 
         function updateMyBookmarks(b) {
             console.log('you want to update prefService Bookmarks',b);

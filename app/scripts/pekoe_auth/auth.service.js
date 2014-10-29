@@ -24,28 +24,40 @@ angular.module('pekoeWorkspaceApp.auth')
      Handle Cancels and other errors
          */
     function getCurrentTenant() {
+        // Check for a parent frame:
+        console.log('Bootstrap call to getCurrentTenant');
+        var parent = window.parent;
+        if (parent !== window) {
+            console.log('parent frame exists');
+            console.log('tenant', parent.pekoeTenant);
+            myTenant = parent.pekoeTenant;
+        }
 
         if (myTenant.key !== 'none') {
             console.log('AuthService already has tenant:', myTenant.key);
-            $.defer().resolve(myTenant.key);
+            $q.defer().resolve(myTenant.key);
         } else {
             console.log('AuthService needs to getTenants from server');
-            return getTenants();
+            var t = getTenants();
+            console.log('getTenants returns:',t);
+            return t;
         }
     }
+    // ----------------- STARTUP
+//    getCurrentTenant(); // A bootstrap call. This is working. Still some confusing logic here
+    // -----------------
 
-    getCurrentTenant(); // A bootstrap call. This is working. Still some confusing logic here
-        // also need to set up a ChooseTenant Modal
 
-    function getTenants(location) {
+    function getTenants() {
         return $http.get('/exist/restxq/pekoe/tenant').then(chooseTenant);
     }
 
     function tenantUpdate(){
         $http.defaults.headers.common.tenant = myTenant.key;
+        window.pekoeTenant = myTenant;
         authService.tenantConfirmed(myTenant.key,
             function (config) {
-                config.headers['tenant'] = myTenant.key;
+                config.headers.tenant = myTenant.key;
                 return config;
             });
         $rootScope.$broadcast('tenant.update');
@@ -72,7 +84,7 @@ angular.module('pekoeWorkspaceApp.auth')
                 myTenants = ts;
 
                 var modalInstance = $modal.open({
-                    templateUrl: 'pekoe_auth/tenant.html',
+                    templateUrl: 'scripts/pekoe_auth/tenant.html',
                     controller: 'TenantModalCtrl',
                     controllerAs: 'tcl',
                     size: 'lg',
@@ -93,7 +105,7 @@ angular.module('pekoeWorkspaceApp.auth')
                         tenantUpdate();
                     },
                     function (errorResult) {
-                        console.log('No Tenant');
+                        console.log('No Tenant',errorResult);
                     });
 
             }
@@ -121,7 +133,7 @@ angular.module('pekoeWorkspaceApp.auth')
 
     function showLogin() {
         var modalInstance = $modal.open({
-           templateUrl: 'pekoe_auth/login.html',
+           templateUrl: 'scripts/pekoe_auth/login.html',
            backdrop: 'static',
            controller: 'AuthModalCtrl',
            size: 'lg',
@@ -136,9 +148,9 @@ angular.module('pekoeWorkspaceApp.auth')
     }
 
     // might want to use this for testing. setTenant('') should cause a tenant request and Bookmark update
-    function setTenant (response) {
-        console.log('setTenant got ',response);
-    }
+//    function setTenant (response) {
+//        console.log('setTenant got ',response);
+//    }
 
     // this is in case the tenant is lost somehow - the server will send an error. 412 Precondition Failed
     $rootScope.$on('event:auth-tenantRequired',function () {
@@ -161,10 +173,10 @@ angular.module('pekoeWorkspaceApp.auth')
             console.log('AuthService.getTenant');
             return getCurrentTenant();
         },
-        setTenant: function (tenant) {
-            console.log('AuthService.setTenant');
-            changeTenant(tenant);
-        },
+//        setTenant: function (tenant) {
+//            console.log('AuthService.setTenant');
+//            changeTenant(tenant);
+//        },
         setTenants : function (tenants) {
             console.log('AuthService.setTenants');
             myTenants = tenants;
@@ -189,7 +201,7 @@ angular.module('pekoeWorkspaceApp.auth')
                     $modalInstance.close($scope.user);
                 },
                 function (rejected){
-                    console.warn('login succeeded but received 412. Not handled');
+                    console.warn('login succeeded but received 412. Not handled',rejected);
                 });
         };
     }]);

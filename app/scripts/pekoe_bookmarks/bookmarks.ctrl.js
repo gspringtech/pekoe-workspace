@@ -5,19 +5,41 @@
 // TODO need to reduce this to a minimal handler for the content and make eveything happen in BookmarksService
 angular.module('pekoeWorkspaceApp.bookmarks')
     .controller('BookmarksCtrl', ['$scope', '$http', 'BookmarksService', function ($scope, $http, BookmarksService) {
-
+        this.editmode = false;
         this.bookmarks = BookmarksService.getBookmarks();
         this.list = this.bookmarks.group;
         var self = this;
         this.sortableOptions = {
-            update: function(e, ui) { console.log('Sortable got update', self.list); },
+            update: function() { console.log('Sortable got update', self.list); },
             axis: 'y',
             tolerance:'pointer',
+            disabled: true,
             connectWith: '.bookmarks-container'
         };
 
+        this.deleteMe = function (i) {
+            console.log('this is ',this, 'and i is ',i);
+        };
+
+        this.cancelEdit = function () {
+
+            this.editmode = false;
+            this.sortableOptions.disabled = true;
+            this.onAtATime = true;
+        };
+
+        this.edit = function () {
+            self.editmode = true;
+            console.log('edit bookmarks');
+            self.sortableOptions.disabled = false;
+            self.oneAtATime = false;
+        };
+
         function saveChanges() {
-            $http.post('/exist/restxq/pekoe/user/bookmarks',this.bookmarks);
+            self.editmode = false;
+            self.sortableOptions.disabled = true;
+            self.oneAtATime = true;
+            $http.post('/exist/restxq/pekoe/user/bookmarks',self.bookmarks);
         }
 
 //        this.groupItems = [];
@@ -47,7 +69,9 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             self.list = self.bookmarks.groups;
             // need to fix the open/closed state. Only the first should be open
             angular.forEach(self.list, function (v){
-                if (v.open) {delete v.open};
+                if (v.open) {
+                    delete v.open;
+                }
             });
             if (self.list[0]) {
                 self.list[0].open = true;
@@ -55,7 +79,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
 //            console.log('List updated to ',self.list);
         });
 
-        $scope.oneAtATime = true; // <accordion close-others="oneAtATime">
+        $scope.oneAtATime = true; // <accordion close-others='oneAtATime'>
 
         $scope.addItem = function() {
             var newItemNo = $scope.items.length + 1;

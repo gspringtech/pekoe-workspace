@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         tasks: ['bowerInstall']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.js','<%= yeoman.app %>/lib/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
           livereload: true

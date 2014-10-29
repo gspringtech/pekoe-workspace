@@ -11,7 +11,6 @@
     "angular-sanitize": "1.2.15",
     "font-awesome": "~4.2.0",
     "angular-xml": "~1.0.4",
-    "angular-ui": "~0.4.0",
     "angular-dragdrop": "~1.0.8",
     "angular-bootstrap": "~0.11.2",
     "autofill-event": "~1.0.0"
