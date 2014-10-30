@@ -17,4 +17,9 @@ angular.module('pekoeWorkspaceApp.tabs')
         // How can I send a message to the IFRAME?
         $scope.tabs = TabsService.tabs;
 
+        $scope.removeTab = function (index) {
+            console.log('remove tab');
+            $scope.tabs.splice(index, 1);
+        };
+
     }]);

@@ -18,7 +18,7 @@ angular.module('pekoeWorkspaceApp')
 //              scope.$broadcast('resize::resize');
 //          },500));
 
-          angular.element($window).on('resize', function(e) {
+          angular.element($window).on('resize', function() {
               // Namespacing events with name of directive + event to avoid collisions
               scope.$broadcast('resize::resize');
           });
