@@ -2,27 +2,9 @@
 
 angular.module('pekoeWorkspaceApp.bookmarks')
   .controller('BookmarksitemCtrl', ['$scope','TabsService', function ($scope, TabsService) {
-        // use BookmarksitemCtrl as bki
-        // and then use this. to hide non-essential scope parts
-//   console.log('scope' ,$scope);
-        /*
-        currently in scope:
-        group [Object]
-        item <group>
-        ngModel [Object[<group>,<group>]
-        panelBaseId "collapse-panel-body"
-        panelId     "collapse-panel"
-        subitem <item>
-
-         */
-
         this.click = function (){
-            TabsService.add(this);
+            TabsService.add($scope.subitem);
         };
-        var myItem = angular.element($scope.subitem);
-//        console.log('bookmarksItemCtrl my item is',myItem)
-        this.title = myItem.attr('title');
-        this.href = myItem.attr('href');
   }]);
 
 angular.module('pekoeWorkspaceApp.bookmarks')
@@ -40,6 +22,26 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             tolerance:'pointer',
             disabled: !this.editmode,
             connectWith: '.bookmarks-container'
+        };
+        this.add = function(tab) {
+            // TODO - rethink this test. Probably want to check the href of the tab.
+            // Then offer the user the option to change the name if the same.
+            if (!tab.title || tab.title === '') { return; }
+            var items = $scope.group.items;
+            var inList = false;
+            for (var i in items) {
+                if (items[i].href === tab.href) {
+                    inList = true;
+                    break;
+                }
+            }
+            if (inList) {
+                console.log('Bookmarks already contanis this item');
+                return;
+            }
+
+            $scope.group.items.push(tab);
+            $scope.$apply();
         };
         // Okay - the order of this list is being changed by sorting, but it's not changing the XML
         // So either I must mimic the xml completely, or store and use JSON.

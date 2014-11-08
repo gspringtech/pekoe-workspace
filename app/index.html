@@ -11,7 +11,8 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>-->
+    <link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
@@ -31,7 +32,7 @@
                 <span class="brand" custom-popover popover-html="The Pekoe Workspace" popover-placement="bottom" popover-label="Pekoe"></span>
                 <!-- Button trigger modal -->
 
-                <logout />
+                <logout /><!-- in case you miss it - it's logout!! -->
             </div>
         </div>
     </nav>
@@ -48,6 +49,7 @@
                     <span class="sr-only">Split button!</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="bc.add()">Add bookmark</a> </li>
                     <li><a ng-click="bc.edit()">Re-order or delete</a></li>
                     <li><a ng-click="bc.cancelEdit()">Cancel edit mode</a></li>
                     <li><a ng-click="bc.save()">Save changes</a></li>
@@ -58,9 +60,9 @@
             <accordion close-others="oneAtATime">
                 <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
                     <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
-                        <ul ui-sortable="bgc.sortableOptions" ng-model="group.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc">
-                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()" title="{{bmi.href}}">
-                                {{bmi.title}}
+                        <ul ui-sortable="bgc.sortableOptions" ng-model="group.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc" droppable>
+                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()" title="{{subitem.href}}">
+                                {{subitem.title}}
                                 <button class="pull-right" ng-if="bc.editmode" ng-click="bc.deleteMe(subitem)">X</button>
                             </li>
                         </ul>
@@ -69,7 +71,7 @@
             </accordion>
             <form class="form-horizontal" role="form" id="addBookmarksFolderForm" ng-if="bc.editmode" ng-submit="bc.addGroup()">
                 <div class="form-group form-group-lg" >
-                    <label class="sr-only" for="bc_title">Email address</label>
+                    <label class="sr-only" for="bc_title">new Bookmarks folder name</label>
                     <input class="form-control" id="bc_title" ng-model="bc.title" type="text" placeholder="Bookmarks folder name">
                 </div>
             </form>
@@ -78,11 +80,32 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div id="work-area" ng-controller="TabsCtrl" resize>
-                <tabset>
-                    <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" draggable-tab>
+            <!-- TODO - make sense of this.
+            The resize directive belongs either on the parent or the children not both
+            Consider creating an UUID which is the name of a function on the parent : f12345... and pass that UUId to the child
+            then the child has restricted and temporary access to the parent function.
+
+            Previously, I generated the IFRAME on the server and then used it to load the rest of the page.
+            Can I somehow pass "this" tab to its frame? And add functionality like "signal close"
+
+            Also, need to change the iframe to a directive so that IT can manage whether to load a Form List or Report or something else.
+            -->
+            <div id="work-area" ng-controller="TabsCtrl" pekoe-say-resize>
+                <tabset><!-- draggable is applied to the LI -->
+                    <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" select="activate(tab)"draggable-tab>
                         <tab-heading>{{tab.title}}  <a ng-click="removeTab($index)" href=''><i class="glyphicon glyphicon-remove"></i></a></tab-heading>
-                        <iframe ng-src="{{tab.href | trustedUrl}}" pekoe-frame class="pekoeFrame"></iframe>
+                        <div ng-switch="tab.type" pekoe-do-resize>
+                            <pekoe-form ng-switch-when="form">Some list content</pekoe-form>
+                            <pekoe-frame ng-switch-when="html"></pekoe-frame>
+                            <div ng-switch-default>
+                                <em>Missing or incorrect content type provided ({{tab.type}}). Should be one of </em>
+                                <ul>
+                                    <li>list</li>
+                                    <li>form</li>
+                                    <li>html</li>
+                                </ul>
+                            </div>
+                        </div>
                     </tab>
 
                 </tabset>
@@ -119,13 +142,13 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!--<script src="scripts/lib/trNgGrid.min.js"></script>-->
     <script src="scripts/lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
     <script src="scripts/lib/sortable.js"></script>
     <script src="pekoe_common/pekoe_auth/auth.module.js"></script>
     <script src="scripts/pekoe_bookmarks/bookmarks.module.js"></script>
     <script src="scripts/pekoe_tabs/tabs.module.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/main.js"></script>
     <script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
     <script src="pekoe_common/pekoe_auth/auth.service.js"></script>
     <script src="pekoe_common/pekoe_auth/auth.ctrl.js"></script>
@@ -138,9 +161,16 @@
     <script src="scripts/pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
     <script src="scripts/pekoe_tabs/tabs.service.js"></script>
     <script src="scripts/pekoe_tabs/tabs.ctrl.js"></script>
-    <script src="scripts/pekoe_tabs/pekoe-frame.directive.js"></script>
-    <script src="scripts/directives/resize.js"></script>
-    <script src="scripts/directives/draggabletab.js"></script>
+    <script src="scripts/directives/pekoe.content-resize.directive.js"></script>
+    <script src="scripts/pekoe_tabs/draggabletab.js"></script>
+    <!--<script src="scripts/pekoe_list/list.module.js"></script>-->
+    <!--<script src="scripts/pekoe_list/list.directive.js"></script>-->
+    <!--<script src="scripts/pekoe_list/listContent.directive.js"></script>-->
+
+    <script src="scripts/pekoe_form/form.module.js"></script>
+    <script src="scripts/pekoe_form/form.directive.js"></script>
+    <script src="scripts/pekoe_form/form.service.js"></script>
+    <script src="scripts/directives/frame.directive.js"></script>
     <!-- endbuild -->
 </body>
 </html>

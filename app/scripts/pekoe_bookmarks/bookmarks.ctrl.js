@@ -3,6 +3,7 @@
 // SEE this example http://localhost/exist/apps/demo/examples/special/json.html
 // use angular-ui bootstrap accordion and sortable
 // TODO need to reduce this to a minimal handler for the content and make eveything happen in BookmarksService
+// Getting rid of ng-controller might be the solution. Although I can't really see it.
 angular.module('pekoeWorkspaceApp.bookmarks')
     .controller('BookmarksCtrl', ['$scope', '$http', 'BookmarksService', function ($scope, $http, BookmarksService) {
         this.editmode = false;
@@ -35,6 +36,12 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             self.oneAtATime = false;
         };
 
+        this.add = function (data) {
+            console.log('bookmarks THIS.ADD',data);
+//            BookmarksService.add() //     DON'T KNOW WHERE TO ADD IT. NEED TO PASS THE GROUP
+//            self.editmode = true;
+        };
+
         function saveChanges() {
             self.editmode = false;
             self.sortableOptions.disabled = true;
@@ -42,12 +49,10 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             $http.post('/exist/restxq/pekoe/user/bookmarks',self.bookmarks);
         }
 
-//        this.groupItems = [];
-
-        // TODO make the Folders into Droppable so that when a Tab is dragged, it can be added to a list
 
         function addGroup() {
             if (!self.title || self.title === '') { return; }
+            console.log();
             // then, show the save button
             self.list.push({
                 title: self.title,
@@ -82,6 +87,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         $scope.oneAtATime = true; // <accordion close-others='oneAtATime'>
 
         $scope.addItem = function() {
+            console.log('bookmarks ctrl SCOPE.ADDITEM');
             var newItemNo = $scope.items.length + 1;
             $scope.items.push('Item ' + newItemNo);
         };

@@ -14,8 +14,9 @@ angular
         'ui.sortable',
         'pekoeWorkspaceApp.auth',
         'pekoeWorkspaceApp.bookmarks',
-        'pekoeWorkspaceApp.tabs'
-//        'ui.tree'
+        'pekoeWorkspaceApp.tabs',
+//        'pekoeWorkspaceApp.list',
+        'pekoeWorkspaceApp.form'
     ])
     .config(function ($locationProvider) {
         $locationProvider.html5Mode(true);

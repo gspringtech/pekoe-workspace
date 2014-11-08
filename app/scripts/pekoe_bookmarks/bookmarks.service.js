@@ -93,7 +93,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 console.log('you asked for these tenants',myTenants);
                 return myTenants;
             },*/
-
+            bm : myBookmarks,
             getBookmarks: function () {
                 return convertBookmarks();
             },

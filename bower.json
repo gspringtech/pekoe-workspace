@@ -20,6 +20,7 @@
   },
   "resolutions": {
     "es5-shim": "2.3.0",
-    "jquery": "2.x"
+    "jquery": "2.x",
+    "angular": "1.2.15"
   }
 }

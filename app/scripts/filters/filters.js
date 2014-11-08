@@ -14,16 +14,12 @@ angular.module('pekoeWorkspaceApp')
             }
             return angular.element(input).children();
         };
-    });
-
-angular.module('pekoeWorkspaceApp')
-    .filter('trustedUrl',['$sce', function ($sce){
-        return function (val){
-            if (val === '/') {
-                console.log('going to set url to /list');
-                return $sce.trustAsResourceUrl('/list/');
-            }
-            return $sce.trustAsResourceUrl('/exist/restxq/' + val);
+    })
+    .filter('tabUrl',['$sce','$http', function ($sce){
+        return function (tab){
+//            var path = (tab.collection) ? '?collection=' + tab.collection : '';
+//            var trustedURL = tab.href;
+            return $sce.trustAsResourceUrl(tab.href);
         };
     }]);
 
