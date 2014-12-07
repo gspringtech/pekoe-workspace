@@ -25,7 +25,7 @@ angular.module('pekoeWorkspaceApp')
     // NOTE this resize is being sent when content is first added to the work-area
           angular.element($window).on('resize', function() {
               // Namespacing events with name of directive + event to avoid collisions
-              console.log('broadcasting resize event');
+              //console.log('broadcasting resize event');
               scope.$broadcast('resize::resize');
           });
       }
@@ -61,11 +61,12 @@ angular.module('pekoeWorkspaceApp').directive('pekoeDoResize', function() {
         },
         link: function ($scope,$element) {
             var resizer = function () {
-                console.log('got call to do resize');
+                //console.log('got call to do resize');
                 // TODO I should probably make this work based on a parent element provided as a parameter.
-                $element.width(angular.element('#work-area').width()-4); // arbitrary -4 to handle margins or borders or something
+                // 20 or so for the 'well' around the tab-content
+                $element.width(angular.element('#work-area').width()-22); // arbitrary -4 to handle margins or borders or something
                 var someMarginOrOther = 20;
-                $element.height(angular.element('#footer').position().top - angular.element('.tab-content').position().top - someMarginOrOther);
+                $element.height(window.innerHeight - angular.element('.tab-content').position().top - someMarginOrOther);
             };
 
 

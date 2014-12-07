@@ -15,13 +15,22 @@ angular.module('pekoeWorkspaceApp')
             return angular.element(input).children();
         };
     })
-    .filter('tabUrl',['$sce','$http', function ($sce){
+    .filter('tabUrl',['$sce', function ($sce){
         return function (tab){
 //            var path = (tab.collection) ? '?collection=' + tab.collection : '';
 //            var trustedURL = tab.href;
             return $sce.trustAsResourceUrl(tab.href);
         };
+    }])
+    .filter('formUrl',['$sce', function ($sce){
+        return function (tab){
+//            var path = (tab.collection) ? '?collection=' + tab.collection : '';
+//            var trustedURL = tab.href;
+            return $sce.trustAsResourceUrl('/pekoe-form/index.html?job=' + tab.href);
+        };
     }]);
+
+
 
 // but probably better to try this ...
 // http://www.bennadel.com/blog/2450-using-ngcontroller-with-ngrepeat-in-angularjs.htm

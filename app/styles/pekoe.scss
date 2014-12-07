@@ -1,36 +1,36 @@
 // Adjustments to bootstrap and custom styles.
-.navbar { margin-bottom: 0;  }
+
 .panel-heading { padding: 0;}
 .panel-title { padding: 10px 15px;}
+#wrapper{position: fixed; width: 100%; height: 100%; top:0; left:0;}
 
-#footer {
-  position:fixed;
-  bottom:0%;
-//  text-align: right;
-  height: 28px;
-  left: 270px;
-//  color : #0000FF;
-//  background-color: #80bbcc;
-  border-top: 1px solid #888888;
-  right: 15px;
-}
 
 .pekoeFrame {border:0; margin:0; width: 100%; height:100%;}
-
-#work-area {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top:50px;
-  left:0;
-  padding-left: 271px; // sidebar
-  padding-top: 2px;  // header
-  padding-bottom: 28px;
-}
+//
+//#work-area {
+//  position: fixed;
+//  height: 100%;
+//  width: 100%;
+//  top:50px;
+//  left:0;
+//  padding-left: 271px; // sidebar
+//  padding-top: 2px;  // header
+//  padding-bottom: 28px;
+//}
 
 .tab-content {
-  overflow-y: scroll;
-  overflow-x: hidden;
+//  overflow-y: scroll;
+//  overflow-x: scroll;
 }
+.pekoe-bg {
+    background-image: url(/images/ld2.jpg);
+}
+//.nav-tabs {min-height:41px;}
 
-.nav-tabs {min-height:41px;}
+.pekoe-well {
+//    background-color: #EEB568;
+//    background-image: url(/images/ld2.jpg);
+    background-color: #f8d271;
+    background-repeat: no-repeat;
+
+}

@@ -1,7 +1,7 @@
 <!doctype html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Pekoe Job Manager</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -12,165 +12,186 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <!--<link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="/pekoe-common/dist/css/bootstrap.css"/>
+    <!--<link rel="stylesheet" href="styles/main.css">-->
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
-     <!-- endbuild -->
-  </head>
-  <body ng-app="pekoeWorkspaceApp">
-    <!-- Add your site or application content here -->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" ng-click="toggled = (toggled === 'toggled') ? '' : 'toggled'">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+    <!-- endbuild -->
+</head>
+<body ng-app="pekoeWorkspaceApp" ng-cloak>
+<!-- Add your site or application content here -->
+<div id="wrapper" ng-class="[$rootScope.toggled]" class="pekoe-bg"> <!-- Page wrapper -->
+    <div class="panel" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
+        <div>
+            <div class="btn-group pull-right">
+                <!-- Go to edit mode - then either Save or Revert . Save regardless of whether user changed anything. simpler. -->
+                <button type="button" class="btn" ng-if="bc.editmode === false" ng-click="bc.edit()"
+                        title="Edit your bookmarks">
+                    <i class="glyphicon glyphicon-edit"></i>
                 </button>
-                <span class="brand" custom-popover popover-html="The Pekoe Workspace" popover-placement="bottom" popover-label="Pekoe"></span>
-                <!-- Button trigger modal -->
-
-                <logout /><!-- in case you miss it - it's logout!! -->
-            </div>
-        </div>
-    </nav>
-    <div id="wrapper" ng-class="[toggled]">
-        <div class="" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
-            <!--<div class="sidebar-brand">{{bk.myUser}}</div>-->
-            <!--<div class="sidebar-brand">{{bk.myTenant.name}}</div>-->
-            <div class="h2">
-                <span>Bookmarks</span>
-
-                <div class="pull-right btn-group" dropdown>
-                <button type="button" class="btn btn-danger dropdown-toggle">
-                    <span class="caret"></span>
-                    <span class="sr-only">Split button!</span>
+                <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.revert()"
+                        title="Revert to saved bookmarks">
+                    <i class="glyphicon glyphicon-refresh"></i>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="bc.add()">Add bookmark</a> </li>
-                    <li><a ng-click="bc.edit()">Re-order or delete</a></li>
-                    <li><a ng-click="bc.cancelEdit()">Cancel edit mode</a></li>
-                    <li><a ng-click="bc.save()">Save changes</a></li>
-                </ul>
-            </div>
+                <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.save()"
+                        title="Save changes to bookmarks">
+                    <i class="glyphicon glyphicon-save"></i>
+                </button>
             </div>
 
-            <accordion close-others="oneAtATime">
-                <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
-                    <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list" is-open="group.open">
-                        <ul ui-sortable="bgc.sortableOptions" ng-model="group.items" class="bookmarks-container list-unstyled" ng-controller="BookmarksGroupCtrl as bgc" droppable>
-                            <li class="btn btn-default btn-block" ng-repeat="subitem in group.items" ng-controller="BookmarksitemCtrl as bmi" ng-click="bmi.click()" title="{{subitem.href}}">
-                                {{subitem.title}}
-                                <button class="pull-right" ng-if="bc.editmode" ng-click="bc.deleteMe(subitem)">X</button>
-                            </li>
-                        </ul>
-                    </accordion-group>
-                </div>
-            </accordion>
-            <form class="form-horizontal" role="form" id="addBookmarksFolderForm" ng-if="bc.editmode" ng-submit="bc.addGroup()">
-                <div class="form-group form-group-lg" >
-                    <label class="sr-only" for="bc_title">new Bookmarks folder name</label>
-                    <input class="form-control" id="bc_title" ng-model="bc.title" type="text" placeholder="Bookmarks folder name">
-                </div>
-            </form>
-        </div>
-        <!-- /#sidebar-wrapper -->
+            <tabset> <!-- BOOKMARKS tabset -->
+                <!-- while not strictly necessary, using a tabset makes the bookmarks align neatly with the workarea, and may come in handy for other functions -->
+                <tab>
+                    <tab-heading><em>Bookmarks</em></tab-heading>
+                    <div class="well well-sm">
+                        <accordion close-others="oneAtATime">
+                            <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
+                                <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list"
+                                                 is-open="group.open">
+                                    <ul ui-sortable="bgc.sortableOptions" ng-model="group.items"
+                                        class="bookmarks-container list-unstyled"
+                                        ng-controller="BookmarksGroupCtrl as bgc"
+                                        droppable>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <!-- TODO - make sense of this.
-            The resize directive belongs either on the parent or the children not both
-            Consider creating an UUID which is the name of a function on the parent : f12345... and pass that UUId to the child
-            then the child has restricted and temporary access to the parent function.
+                                        <li ng-disabled="subitem.disabled"
+                                            ng-repeat="subitem in group.items" ng-switch="subitem.type">
 
-            Previously, I generated the IFRAME on the server and then used it to load the rest of the page.
-            Can I somehow pass "this" tab to its frame? And add functionality like "signal close"
+                                                <pekoe-input-item ng-switch-when="search"></pekoe-input-item>
+                                                <pekoe-button-item ng-switch-when="html"></pekoe-button-item>
+                                                <pekoe-button-item ng-switch-when="form"></pekoe-button-item>
+                                                <div ng-switch-when="placeholder">
+                                                    <span >Placeholder</span>
+                                                </div>
+                                                <div ng-switch-default>Missing bookmark type: '{{subitem.type}}'</div>
 
-            Also, need to change the iframe to a directive so that IT can manage whether to load a Form List or Report or something else.
-            -->
-            <div id="work-area" ng-controller="TabsCtrl" pekoe-say-resize>
-                <tabset><!-- draggable is applied to the LI -->
-                    <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" select="activate(tab)"draggable-tab>
-                        <tab-heading>{{tab.title}}  <a ng-click="removeTab($index)" href=''><i class="glyphicon glyphicon-remove"></i></a></tab-heading>
-                        <div ng-switch="tab.type" pekoe-do-resize>
-                            <pekoe-form ng-switch-when="form">Some list content</pekoe-form>
-                            <pekoe-frame ng-switch-when="html"></pekoe-frame>
-                            <div ng-switch-default>
-                                <em>Missing or incorrect content type provided ({{tab.type}}). Should be one of </em>
-                                <ul>
-                                    <li>list</li>
-                                    <li>form</li>
-                                    <li>html</li>
-                                </ul>
+
+                                        </li>
+                                    </ul>
+                                </accordion-group>
                             </div>
+                        </accordion>
+                        <div>
+                            <form class="form-horizontal" role="form" id="addBookmarksFolderForm" ng-if="bc.editmode"
+                                  ng-submit="bc.addGroup()">
+                                <label class="sr-only" for="bc_title">new Bookmarks folder name</label>
+                                <input class="form-control" id="bc_title" ng-model="bc.title" type="text"
+                                       placeholder="New Bookmarks folder"
+                                       title="type a name and press Return to create a new Folder">
+                            </form>
                         </div>
-                    </tab>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
 
-                </tabset>
+    <!-- Page Content -->
+    <div id="page-content-wrapper"> <!-- MAIN WORKSPACE -->
+        <!-- TODO - make sense of this.
+        The resize directive belongs either on the parent or the children not both
+        Consider creating an UUID which is the name of a function on the parent : f12345... and pass that UUId to the child
+        then the child has restricted and temporary access to the parent function.
+
+        Previously, I generated the IFRAME on the server and then used it to load the rest of the page.
+        Can I somehow pass "this" tab to its frame? And add functionality like "signal close"
+
+        Also, need to change the iframe to a directive so that IT can manage whether to load a Form List or Report or something else.
+        -->
+        <div id="work-area" ng-controller="TabsCtrl" class="panel" pekoe-say-resize>
+
+            <div class="btn-group pull-right">            <!-- logout -->
+                <span><logout/></span><!-- in case you miss it - it's logout!! Defined in pekoe_common auth.module -->
+                <!-- bookmark -->
+                <button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"
+                        title="Add a Bookmark for this tab">
+                    <i class="glyphicon glyphicon-bookmark"></i>
+                </button>
+                <!-- toggle sidebar -->
+                <!--<button type="button" title="Toggle the Bookmarks panel" class="collapsed btn"-->
+                        <!--ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">-->
+                    <!--<i class="fa fa-navicon"></i>-->
+                <!--</button>-->
             </div>
 
+            <tabset><!-- draggable is applied to the LI -->
+                <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" select="activate(tab)"
+                     draggable-tab>
+                    <tab-heading>{{tab.title}} <a ng-click="removeTab($index)" href=''><i
+                        class="glyphicon glyphicon-remove"></i></a></tab-heading>
+                    <div class="well well-sm pekoe-well" ng-switch="tab.type" pekoe-do-resize>
+                        <pekoe-form ng-switch-when="form">form here</pekoe-form>
+                        <pekoe-frame ng-switch-when="html"></pekoe-frame>
+                        <pekoe-frame ng-switch-when="search"></pekoe-frame>
+                        <div ng-switch-default>
+                            <em>Missing or incorrect content type provided ({{tab.type}}). Should be one of </em>
+                            <ul>
+                                <li>list</li>
+                                <li>form</li>
+                                <li>html</li>
+                            </ul>
+                        </div>
+                    </div>
+                </tab>
+
+            </tabset>
         </div>
-        <!-- /#page-content-wrapper -->
-        <div id="footer" class="row">
-            <div id="hints">Tea for tasks</div>
-            <div id="status">Status</div>
-            <div class="" id="tx-detail">Something else</div>
-        </div><!-- end #footer -->
+
     </div>
-    <!-- /#wrapper -->
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
 
 
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-xml/angular-xml.js"></script>
-    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-    <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-xml/angular-xml.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <!--<script src="scripts/lib/trNgGrid.min.js"></script>-->
-    <script src="scripts/lib/angular-http-auth-master/src/http-auth-interceptor.js" ></script>
-    <script src="scripts/lib/sortable.js"></script>
-    <script src="pekoe_common/pekoe_auth/auth.module.js"></script>
-    <script src="scripts/pekoe_bookmarks/bookmarks.module.js"></script>
-    <script src="scripts/pekoe_tabs/tabs.module.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
-    <script src="pekoe_common/pekoe_auth/auth.service.js"></script>
-    <script src="pekoe_common/pekoe_auth/auth.ctrl.js"></script>
-    <script src="pekoe_common/pekoe_auth/logout.js"></script>
-    <script src="pekoe_common/pekoe_auth/tenant.ctrl.js"></script>
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<!--<script src="scripts/lib/trNgGrid.min.js"></script>-->
+<script src="scripts/lib/angular-http-auth-master/src/http-auth-interceptor.js"></script>
+<script src="scripts/lib/sortable.js"></script>
+<script src="pekoe-common/pekoe_auth/auth.module.js"></script>
+<script src="scripts/pekoe_bookmarks/bookmarks.module.js"></script>
+<script src="scripts/pekoe_bookmarks/bookmarks.group.ctrl.js"></script>
+<script src="scripts/pekoe_tabs/tabs.module.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
+<script src="pekoe-common/pekoe_auth/auth.service.js"></script>
+<script src="pekoe-common/pekoe_auth/auth.ctrl.js"></script>
+<script src="pekoe-common/pekoe_auth/logout.js"></script>
+<script src="pekoe-common/pekoe_auth/tenant.ctrl.js"></script>
 
 
-    <script src="scripts/pekoe_bookmarks/bookmarks.service.js"></script>
-    <script src="scripts/filters/filters.js"></script>
-    <script src="scripts/pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
-    <script src="scripts/pekoe_tabs/tabs.service.js"></script>
-    <script src="scripts/pekoe_tabs/tabs.ctrl.js"></script>
-    <script src="scripts/directives/pekoe.content-resize.directive.js"></script>
-    <script src="scripts/pekoe_tabs/draggabletab.js"></script>
-    <!--<script src="scripts/pekoe_list/list.module.js"></script>-->
-    <!--<script src="scripts/pekoe_list/list.directive.js"></script>-->
-    <!--<script src="scripts/pekoe_list/listContent.directive.js"></script>-->
+<script src="scripts/pekoe_bookmarks/bookmarks.service.js"></script>
+<script src="scripts/filters/filters.js"></script>
+<script src="scripts/pekoe_bookmarks/button-item.directive.js"></script>
+<script src="scripts/pekoe_bookmarks/input-item.directive.js"></script>
+<script src="scripts/pekoe_bookmarks/bookmarksitem.ctrl.js"></script>
+<script src="scripts/pekoe_tabs/tabs.service.js"></script>
+<script src="scripts/pekoe_tabs/tabs.ctrl.js"></script>
+<script src="scripts/directives/pekoe.content-resize.directive.js"></script>
+<script src="scripts/directives/clickToEdit.js"></script>
+<script src="scripts/pekoe_tabs/draggabletab.js"></script>
 
-    <script src="scripts/pekoe_form/form.module.js"></script>
-    <script src="scripts/pekoe_form/form.directive.js"></script>
-    <script src="scripts/pekoe_form/form.service.js"></script>
-    <script src="scripts/directives/frame.directive.js"></script>
-    <!-- endbuild -->
+
+<script src="scripts/directives/frame.directive.js"></script>
+<script src="scripts/directives/pekoe-form.directive.js"></script>
+<!-- endbuild -->
 </body>
 </html>

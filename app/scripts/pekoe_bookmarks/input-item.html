@@ -1,0 +1,12 @@
+<div class="btn-block" ng-controller="BookmarksitemCtrl as bmi" >
+    <form class="form-horizontal" role="form">
+        <input class="form-control"  type="text"
+               placeholder="{{subitem.title}}"
+               >
+    </form>
+
+    <a ng-click="bgc.deleteMe($index); $event.stopPropagation();"
+       ng-if="bc.editmode"
+       href=''><i
+        class="glyphicon glyphicon-remove"></i></a>
+</div>

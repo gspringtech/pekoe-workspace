@@ -4,17 +4,16 @@
  */
 angular.module('pekoeWorkspaceApp.tabs')
     .service('TabsService', ['$rootScope', function ($rootScope) {
-
+        var myService = {};
         var setAllInactive = function () {
-            angular.forEach(service.tabs, function (td) {
+            angular.forEach(myService.tabs, function (td) {
                 td.active = false;
             });
         };
 
         var tabIndex = function (item) {
             var exists = -1;
-            angular.forEach(service.tabs, function (td, k) {
-                console.log('COMPARE',td.title, item.title);
+            angular.forEach(myService.tabs, function (td, k) {
                 if (td.href === item.href && td.title === item.title) {
                     exists = k;
                     return false;
@@ -25,7 +24,7 @@ angular.module('pekoeWorkspaceApp.tabs')
 
         var currentActive = function () {
             var current = -1;
-            angular.forEach(service.tabs, function (td, k) {
+            angular.forEach(myService.tabs, function (td, k) {
                 if (td.active) {
                     current = k;
                     return false; // probably unnecessary as this is such a small array.
@@ -33,47 +32,85 @@ angular.module('pekoeWorkspaceApp.tabs')
             });
             return current;
         };
+        myService.active = function () {
+            return myService.tabs[currentActive()];
+        };
 
-        var service = {
-            tabs: [],
+        myService.tabs = [];
 
-            // Inactivate all tabs, add tab if not existing, activate if existing, refresh if active
-            add: function (bookmark) {
-                /*
-                As I suspected, the 'bookmark' object is being used directly in the tab.
-                So when the title is modified, so is the original bookmark. Not so useful.
-                It also means that the test for .indexOf is looking for that same object - not doing any comparison
-                So when I make a copy of the tab, the index function will break.
+       // manage the iframe content
+        myService.manage = function (tab, frameWindow) {
+            if (tab.type === 'form'){ // FORM windows need to have a chance to clean up...
+                var tabCloser = function () { // This will be called by the Form window
+                    myService.tabs.splice(tabIndex(tab), 1);
+                    $rootScope.$apply();
+                };
+                frameWindow.readyToClose = tabCloser;
+            }
+            tab.frameWindow = frameWindow;
+        };
 
-                 */
-                var current = currentActive();
-                console.log('ADD TAB funct');
-
-                var tab = angular.copy(bookmark); // NOTE that if you supply a destination it will be updated. - is that useful?
-
-//                tab.active = true;
-
-                var tIndex = tabIndex(tab);
-                console.log('tIndex',tIndex,'current',current);
-                if (tIndex === -1) {
-                    setAllInactive();
-                    tab.active = true;
-                    service.tabs.push(tab);
-                    $rootScope.$broadcast('tabs.add'); // -------------------- broadcast tabs.add
-                } else if (tIndex === current) {
-                    console.log('reload this tab');
-                    $rootScope.$broadcast('tabs.reload'); // ----------------- broadcast tabs.reload
-                    // maybe this is handled by the tab control?
-                    // how do I send a message to the iframe?
-                    // Maybe it should be a directive with a controller - listening for messages.
-                    // maybe its content should register with a service.
-                } else {
-                    this.tabs[tIndex].active = true;
-                    // should cause a select
+        // The tabs.ctrl .remove method will call this
+        myService.closeTab = function (index) { // this index is simply the array index. It changes whenever a tab is closed
+            var tab = myService.tabs[index];
+            try {
+                if (tab.type === 'form' && tab.frameWindow && tab.frameWindow.pekoeClose) {
+                    tab.frameWindow.pekoeClose();
+                } else { // just close it
+                    myService.tabs.splice(index, 1);
                 }
-
+            } catch (e) {
+                myService.tabs.splice(index,1); // is this sensible?
+                console.warn('ERROR when trying to CLOSE A MANAGED TAB', e);
+            }
+        };
+        // tabs.ctrl will call this on select
+        myService.reActivate = function (tab) {
+            // I'm getting this message when the tab is first added
+            // and when you switch back to it
+            // BUT NOT WHEN it's already Active - only the RELOAD below
+            if (tab.type !== 'form') {
+                if (tab.frameWindow) {
+                    tab.frameWindow.location.reload(); // this is really a 'refresh'.
+                    console.log('reActivate', tab.title);
+                    tab.active = true;
+                }
+                else tab.active = true;
             }
         };
 
-        return service;
+        // Inactivate all tabs, add tab if not existing, activate and refresh if existing and, reload the tab from the bookmark if it is currently active
+        // this should not use broadcast
+        myService.add = function (bookmark) {
+            console.log('ADD',bookmark.href);
+            try {
+                var newTab = angular.copy(bookmark); // Don't want to modify the original bookmark.
+                var current = currentActive(); // index of currently active tab.
+
+                var tIndex = tabIndex(newTab); // is this tab already loaded?
+                //console.log('tIndex',tIndex, ' and current',current);
+                setAllInactive();
+                if (tIndex === -1) { // Not found so Add NEW tab
+                    console.log('... as NEW tab');
+                    newTab.active = true;
+                    myService.tabs.push(newTab);
+                } else if (tIndex === current) { // is the current tab so Reload
+                    console.log('... RELOAD TAB');
+                    var tab = myService.tabs[tIndex];
+                    if (tab.type !== 'form') {
+                        tab.frameWindow.location = tab.href;
+                    }
+                    tab.active = true;
+                } else { // found but not current,
+                    var tab = myService.tabs[tIndex];
+                    tab.active = true;
+                    console.log('... REFRESH TAB');
+                    //var tab = myService.tabs[tIndex];
+                    //tab.frameWindow.location = tab.href;
+                    //tab.active = true;
+                }
+            } catch (e) {console.warn('tab service add error',e);}
+        };
+
+        return myService;
     }]);

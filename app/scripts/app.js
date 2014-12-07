@@ -14,9 +14,7 @@ angular
         'ui.sortable',
         'pekoeWorkspaceApp.auth',
         'pekoeWorkspaceApp.bookmarks',
-        'pekoeWorkspaceApp.tabs',
-//        'pekoeWorkspaceApp.list',
-        'pekoeWorkspaceApp.form'
+        'pekoeWorkspaceApp.tabs'
     ])
     .config(function ($locationProvider) {
         $locationProvider.html5Mode(true);
@@ -27,7 +25,10 @@ angular
     .config(function ($httpProvider) {
 //        $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('xmlHttpInterceptor');
-    });
+    })
+  .run(function($rootScope,AuthService){
+      $rootScope.tenant = AuthService.getTenant(); // This is my bootstrap call. TODO make this the canonical source (e.g. for cm) - if Set, no need to Get.
+  });
 
 /*
 http-auth-interceptor broadcasts event:auth-loginRequired

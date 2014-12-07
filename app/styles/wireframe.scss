@@ -2,8 +2,7 @@
 /* BASIC LAYOUT */
 
 $sidebar-width: 270px;
-$header-height: 60px;
-$footer-height: 28px;
+
 
 #container {
   position: fixed;
@@ -23,8 +22,8 @@ $footer-height: 28px;
   bottom: 0;
   width: 100%;
   overflow: hidden;
-  margin-top: $header-height;
-  margin-bottom: $footer-height;
+  margin-top: 0;
+  margin-bottom: 0;
   background-color: lightpink;
 }
 
@@ -32,7 +31,7 @@ $footer-height: 28px;
   width: $sidebar-width;
   height: 100%;
   box-sizing: border-box;
-  margin-bottom: $footer-height;
+  margin-bottom: 0;
   overflow-y: scroll;
 
 }
