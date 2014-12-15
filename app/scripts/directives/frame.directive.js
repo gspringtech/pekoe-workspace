@@ -14,9 +14,9 @@ angular.module('pekoeWorkspaceApp')
                     $scope.frameLoaded = true;
                     var fr = e.target.contentWindow;
                     TabsService.manage($scope.tab, fr);
-                    if (fr.location.pathname === '/exist/restxq/login') {
-                        $scope.$emit('event:auth-loginRequired');
-                    }
+                    //if (fr.location.pathname === '/exist/restxq/login') {
+                    //    $scope.$emit('event:auth-loginRequired');
+                    //}
                     //else { // Don't do this - it's confusing
                     //    // Change the name and href of the tab so that it can be bookmarked.
                     //    var fullpath = fr.document.location.pathname + fr.document.location.search;
@@ -31,7 +31,7 @@ angular.module('pekoeWorkspaceApp')
             },
             replace: true,
 
-            link: function(scope) {
+            link: function() {
                 // TODO  I NEED TO BE ABLE TO CALL _THIS_ TAB DIRECTLY
                 // TODO These frame directives are ALL STILL LISTENING EVEN AFTER BEING DESTROYED
                 // WHICH means that I MUST turn OFF any listeners I turn ON

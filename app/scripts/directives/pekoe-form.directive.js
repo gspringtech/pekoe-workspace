@@ -27,7 +27,7 @@ angular.module('pekoeWorkspaceApp')
             },
             replace: true,
 
-            link: function (scope) {
+            link: function () {
 
                 // this is supposed to happen when the Tab is activated
                 //$rootScope.$on('tabs.refresh', function () { // refresh is broadcast by the tabs.ctrl when the tab select function is called

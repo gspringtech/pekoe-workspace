@@ -75,7 +75,7 @@ angular.module('pekoeWorkspaceApp.tabs')
                     console.log('reActivate', tab.title);
                     tab.active = true;
                 }
-                else tab.active = true;
+                else {tab.active = true;}
             }
         };
 
@@ -90,19 +90,20 @@ angular.module('pekoeWorkspaceApp.tabs')
                 var tIndex = tabIndex(newTab); // is this tab already loaded?
                 //console.log('tIndex',tIndex, ' and current',current);
                 setAllInactive();
+                var tab;
                 if (tIndex === -1) { // Not found so Add NEW tab
                     console.log('... as NEW tab');
                     newTab.active = true;
                     myService.tabs.push(newTab);
                 } else if (tIndex === current) { // is the current tab so Reload
                     console.log('... RELOAD TAB');
-                    var tab = myService.tabs[tIndex];
+                    tab = myService.tabs[tIndex];
                     if (tab.type !== 'form') {
                         tab.frameWindow.location = tab.href;
                     }
                     tab.active = true;
                 } else { // found but not current,
-                    var tab = myService.tabs[tIndex];
+                    tab = myService.tabs[tIndex];
                     tab.active = true;
                     console.log('... REFRESH TAB');
                     //var tab = myService.tabs[tIndex];

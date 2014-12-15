@@ -6,7 +6,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
     .directive('pekoeButtonItem', function () { // always remember to camelCase the name otherwise the directive won't work.
         return {
             restrict: 'E',
-            templateUrl: 'scripts/pekoe_bookmarks/button-item.html',
+            templateUrl: 'views/button-item.html',
             controller: function (){
                 //console.log('buttonItem controller element',$element,'$scope',$scope);
 

@@ -6,7 +6,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
     .directive('pekoeInputItem', function (TabsService) { // always remember to camelCase the name otherwise the directive won't work.
         return {
             restrict: 'E',
-            templateUrl: 'scripts/pekoe_bookmarks/input-item.html',
+            templateUrl: 'views/input-item.html',
             controller: function ($element,$scope){
                 var bookmark = $scope.subitem;
                 var inp = $element.find('input');

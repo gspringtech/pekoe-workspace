@@ -5,15 +5,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
+
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
+    <link rel="stylesheet" href="/pekoe-common/dist/css/bootstrap.css"/>
     <!-- build:css({.tmp,app}) styles/main.css -->
     <!--<link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="/pekoe-common/dist/css/bootstrap.css"/>
-    <!--<link rel="stylesheet" href="styles/main.css">-->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+
+
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
     <!-- endbuild -->
@@ -30,12 +31,12 @@
                     <i class="glyphicon glyphicon-edit"></i>
                 </button>
                 <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.revert()"
-                        title="Revert to saved bookmarks">
-                    <i class="glyphicon glyphicon-refresh"></i>
+                        title="Don't save changes">
+                    <i class="glyphicon glyphicon-floppy-remove"></i>
                 </button>
                 <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.save()"
                         title="Save changes to bookmarks">
-                    <i class="glyphicon glyphicon-save"></i>
+                    <i class="glyphicon glyphicon-floppy-disk"></i>
                 </button>
             </div>
 
@@ -43,6 +44,7 @@
                 <!-- while not strictly necessary, using a tabset makes the bookmarks align neatly with the workarea, and may come in handy for other functions -->
                 <tab>
                     <tab-heading><em>Bookmarks</em></tab-heading>
+                    <div>{{myUser}}</div>
                     <div class="well well-sm">
                         <accordion close-others="oneAtATime">
                             <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
@@ -104,7 +106,7 @@
                 <span><logout/></span><!-- in case you miss it - it's logout!! Defined in pekoe_common auth.module -->
                 <!-- bookmark -->
                 <button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"
-                        title="Add a Bookmark for this tab">
+                        title="Add a Bookmark for the current tab">
                     <i class="glyphicon glyphicon-bookmark"></i>
                 </button>
                 <!-- toggle sidebar -->
@@ -163,19 +165,19 @@
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
-<!--<script src="scripts/lib/trNgGrid.min.js"></script>-->
-<script src="scripts/lib/angular-http-auth-master/src/http-auth-interceptor.js"></script>
+<script src="scripts/lib/http-auth-interceptor.js"></script>
 <script src="scripts/lib/sortable.js"></script>
-<script src="pekoe-common/pekoe_auth/auth.module.js"></script>
+<script src="scripts/pekoe_auth/auth.module.js"></script>
 <script src="scripts/pekoe_bookmarks/bookmarks.module.js"></script>
 <script src="scripts/pekoe_bookmarks/bookmarks.group.ctrl.js"></script>
 <script src="scripts/pekoe_tabs/tabs.module.js"></script>
 <script src="scripts/app.js"></script>
+
 <script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
-<script src="pekoe-common/pekoe_auth/auth.service.js"></script>
-<script src="pekoe-common/pekoe_auth/auth.ctrl.js"></script>
-<script src="pekoe-common/pekoe_auth/logout.js"></script>
-<script src="pekoe-common/pekoe_auth/tenant.ctrl.js"></script>
+<script src="scripts/pekoe_auth/auth.service.js"></script>
+<script src="scripts/pekoe_auth/auth.ctrl.js"></script>
+<script src="scripts/pekoe_auth/logout.js"></script>
+<script src="scripts/pekoe_auth/tenant.ctrl.js"></script>
 
 
 <script src="scripts/pekoe_bookmarks/bookmarks.service.js"></script>

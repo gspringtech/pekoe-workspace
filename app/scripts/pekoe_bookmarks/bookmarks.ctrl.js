@@ -54,7 +54,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 }
                 self.list.push({
                     title: self.title,
-                    items: [{title: 'placeholder', href: '', deleteMe: true, disabled: true}],
+                    items: [{title: 'placeholder', href: '', deleteMe: true, disabled: true,type: 'placeholder'}],
                     open: true
                 });
                 self.title = ''; // reset form

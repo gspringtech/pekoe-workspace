@@ -74,7 +74,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             }
             try {
                 var bm = {title: tab.title, href: tab.href, type: tab.type};
-                if (tab.params) bm.params = tab.params;
+                if (tab.params) {bm.params = tab.params;}
                 //var bm = angular.copy(tab); // includes too much - like the frameWindow I've added.
                 grp.items.push(bm);
                 console.log('add to grp', grp);
