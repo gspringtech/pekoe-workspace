@@ -1,9 +1,52 @@
 // Adjustments to bootstrap and custom styles.
-
-.panel-heading { padding: 0;}
+.bookmark-buttons {text-align: right;}
+#page-content-wrapper {
+    height: 100%;
+}
+#work-area, #work-area > div, #work-area .tab-pane {
+    height: 100%;
+}
+.pekoe-well {
+    height: 100%;
+}
+.tab-content {
+    height: 100%;
+}
+.tab-pane {
+    height: 100%;
+}
+.panel-heading .active{
+    padding: 0;
+    background-color: #f36007;
+}
 .panel-title { padding: 10px 15px;}
-#wrapper{position: fixed; width: 100%; height: 100%; top:0; left:0;}
+#sidebar-wrapper {
+    background-color: #323232;
+}
+#wrapper{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding-top:36px;
+    left:0;
+    top:0;
+}
 
+.panel {
+    border-radius: 0;
+}
+.panel-group .panel +.panel {
+    margin-top:0;
+}
+
+.panel-group .panel {
+    border-radius: 0;
+    background-color: inherit;
+}
+
+.panel-body {
+    padding:0;
+}
 
 .pekoeFrame {border:0; margin:0; width: 100%; height:100%;}
 //
@@ -23,14 +66,196 @@
 //  overflow-x: scroll;
 }
 .pekoe-bg {
-    background-image: url(/images/ld2.jpg);
+    //background-image: url(/images/ld2.jpg);
 }
 //.nav-tabs {min-height:41px;}
 
 .pekoe-well {
 //    background-color: #EEB568;
 //    background-image: url(/images/ld2.jpg);
-    background-color: #f8d271;
-    background-repeat: no-repeat;
+   // background-color: #f8d271;
+   // background-repeat: no-repeat;
 
+}
+
+
+/*
+
+Icons are font based so you can change the size and colour as needed.
+
+Glyphicons used:
+glyphicon glyphicon-plus *** add new folder, etc ***
+glyphicon glyphicon-search
+glyphicon glyphicon-remove  *** delete ***
+glyphicon glyphicon-file *** save/accept new bookmarks ***
+glyphicon glyphicon-refresh
+glyphicon glyphicon-bookmark
+glyphicon glyphicon-edit *** edit bookmarks ***
+glyphicon glyphicon-remove-circle *** close a tab ***
+glyphicon glyphicon-folder-close
+glyphicon glyphicon-folder-open
+glyphicon glyphicon-log-out
+glyphicon glyphicon-new-window
+glyphicon glyphicon-floppy-disk *** save bookmarks ***
+glyphicon glyphicon-floppy-remove **** revert/discard changes to bookmarks ****
+
+
+*************************
+Colours
+Orange { color:#f36007; }
+Light Grey { color:#999; }
+Dark Grey { color:#333; }
+*************************
+*/
+
+p, body
+{
+    font-family: "proxima-nova", Helvetica, Arial, sans-serif;
+    font-size:16px !important;
+    font-weight:400 !important;
+}
+
+.pekoeHeader
+{
+    position: absolute;
+    top:0;left:0;
+    background-color:#252525;
+    color:#fff;
+    height:36px;
+    width:100%;
+//    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
+//    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
+    padding: 10px 15px;
+}
+
+
+/* Remove border radius from all buttons, accordions, search boxes etc that have rounded corners, add the class names to this */
+.panel-heading, .btn, .form-control, .input-group-addon, .nav-tabs > li > a
+{
+
+    border-top-left-radius:0;
+    border-top-right-radius:0;
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+
+}
+.panel-heading {
+    padding:0;
+}
+.panel-heading, .panel-heading * {
+    background-color: #666;
+    color: #fff;
+}
+logout button {
+    background-color: inherit;
+}
+logout button:hover {
+    color: white;
+}
+.btn:hover, .btn:focus, .btn.focus {
+    color: white;
+    text-decoration: none;
+    font-weight:700;
+}
+
+.bookmark-buttons .btn {
+    background-color: inherit;
+    color: white;
+}
+
+.panel-default {
+    border-color: #333;
+}
+
+.bookmarks-container .bookmark
+{
+    border: 0;
+    border-top:1px solid #666;
+    background-color: inherit;
+    color: white;
+}
+
+.btn-default
+{
+    border-color:#f36007;
+}
+.icon {
+    padding: 6px 12px;
+    text-align: center;
+}
+.bookmark i.onover {
+    display:none;
+}
+.bookmark:hover i.onover {
+    display:inline;
+}
+.bookmark:hover i.offover {
+    display:none;
+}
+
+.bookmark .input-group-addon {
+    border: none; background-color: inherit;color: white;
+}
+.bookmark.btn-block {
+    text-align: left;
+    padding-left: 2em;
+}
+
+.bookmarksHeading {
+    height: 2.5em;
+    padding: 10px 15px;
+    background-color: inherit;
+    border-bottom: 1px solid #666;
+}
+
+.bookmarksHeading i {
+    background-color: inherit;
+}
+
+.bookmarksHeading, .bookmarkFolderName .panel-title
+{
+    color:#fff;
+    font-size:24px;
+    font-weight:100;
+    text-transform:uppercase;
+}
+
+.bookmarkFolderName .panel-title i {
+    margin-right:0.7em;
+}
+
+.active .panel-heading * {
+    background-color: #f36007;
+}
+
+.bookmarkFolderName .panel-title, .bookmarks { font-size:18px; }
+
+.bookmarks
+{
+    color:#fff;
+}
+
+.bookmarks:hover, .active.bookmarks
+{
+    font-weight:700;
+}
+
+a:link, a:visited { color:#f36007; }
+a:hover, a:active { text-decoration:underline; }
+
+.tableRowHover { background-color:#ebebeb; }
+.tableRowSelected { background-color:#f36007; }
+
+.tabHeadings, .nav-tabs li
+{
+    color:#666;
+    font-size:24px;
+    font-weight:100;
+}
+
+.activeTabHeading
+{
+    background-color:#f36007;
+    color:#fff;
 }

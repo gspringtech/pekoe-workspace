@@ -1,3 +1,25 @@
+/**
+ * Created by alisterpillow on 25/10/2014.
+ *
+ * Pekoe Workspace provides a wrapper for the Pekoe Job Manager
+ * Copyright (C) 2009,2010,2011-2014 Geordie Springfield Pty Ltd (Australia)
+ * Author: Alister Pillow alisterhp@me.com
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
+
 'use strict';
 
 // TODO need to reduce this to a minimal handler for the content and make eveything happen in BookmarksService
@@ -8,7 +30,8 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             // A LOT OF THIS PROBABLY BELONGS IN THE SERVICE
             this.editmode = false;
             this.bookmarks = BookmarksService.bookmarks();
-            this.list = this.bookmarks.group;
+            this.list = this.bookmarks.groups;
+
             var self = this;
             this.sortableOptions = {
                 axis: 'y',
@@ -39,12 +62,14 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 self.cancelEdit();
                 delete self.bookmarks.dirty;
                 cleanUpList();
-/// TODO THIS SHOULD BE IN THE SERVICE
-                $http.post('/exist/restxq/pekoe/user/bookmarks', self.bookmarks).then(function () {
-                    self.bookmarks.dirty = false;
-                }, function (resp) {
-                    console.warn('Problem saving bookmarks:', resp);
-                });
+                BookmarksService.saveBookmarks();
+                //return;
+
+//                $http.post('/exist/restxq/pekoe/user/bookmarks', self.bookmarks).then(function () {
+//                    self.bookmarks.dirty = false;
+//                }, function (resp) {
+//                    console.warn('Problem saving bookmarks:', resp);
+//                });
             }
             // TODO new Group can't have items dragged into it from other Folders. Only from the Tabs.
 
@@ -54,7 +79,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 }
                 self.list.push({
                     title: self.title,
-                    items: [{title: 'placeholder', href: '', deleteMe: true, disabled: true,type: 'placeholder'}],
+                    items: [{title: 'placeholder', href: '', type:'placeholder', deleteMe: true, disabled: true}],
                     open: true
                 });
                 self.title = ''; // reset form
@@ -66,11 +91,11 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             }
 
             function cleanUpList() {
-                angular.forEach(self.list, function (v) {
-                    if (v.open) {
-                        delete v.open;
-                    }
-                });
+                    angular.forEach(self.list, function (v) {
+                        if (v.open) {
+                            delete v.open;
+                        }
+                    });
                 if (self.list[0]) {
                     self.list[0].open = true;
                 }

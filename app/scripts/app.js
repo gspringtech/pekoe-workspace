@@ -1,3 +1,24 @@
+/**
+ * Created by alisterpillow on 25/10/2014.
+ *
+ * Pekoe Workspace provides a wrapper for the Pekoe Job Manager
+ * Copyright (C) 2009,2010,2011-2014 Geordie Springfield Pty Ltd (Australia)
+ * Author: Alister Pillow alisterhp@me.com
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
 'use strict';
 
 // this is a module Creator
@@ -33,4 +54,14 @@ angular
 /*
 http-auth-interceptor broadcasts event:auth-loginRequired
 which is handled by AuthService
+ */
+
+/*
+ $templateCache.put('template/accordion/accordion-group.html', '<div class="accordion-group" ng-class="{ \'active\': isOpen }">' +
+ '<div class="accordion-heading" ><a class="accordion-toggle" ng-click="isOpen = !isOpen" accordion-transclude="heading">{{heading}}</a></div>' +
+ '<div class="accordion-body" collapse="!isOpen">' +
+ '<div class="accordion-inner" ng-transclude></div>' +
+ '</div>' +
+ '</div>');
+ https://github.com/angular-ui/bootstrap/issues/1262
  */

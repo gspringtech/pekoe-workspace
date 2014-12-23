@@ -1,4 +1,7 @@
-<div class="btn btn-default btn-block"" ng-controller="BookmarksitemCtrl as bmi" ng-click="bc.editmode || bmi.click()" title="{{subitem.href}}">
+<div class="btn btn-block bookmark" ng-controller="BookmarksitemCtrl as bmi"
+     ng-click="bc.editmode || bmi.click()" title="{{subitem.href}}">
+    <span class="icon"><i class="offover glyphicon glyphicon-folder-close" ></i>
+    <i class="onover glyphicon glyphicon-folder-open" ></i></span>
     <span ng-model="subitem.title" ng-attr-contenteditable="{{bc.editmode}}" ng-bind="subitem.title"></span>
     <a ng-click="bgc.deleteMe($index); $event.stopPropagation();"
        ng-if="bc.editmode"

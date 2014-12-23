@@ -1,3 +1,24 @@
+/**
+ * Created by alisterpillow on 17/11/2014.
+
+ * Pekoe Workspace provides a wrapper for the Pekoe Job Manager
+ * Copyright (C) 2009,2010,2011-2014 Geordie Springfield Pty Ltd (Australia)
+ * Author: Alister Pillow alisterhp@me.com
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
 'use strict';
 
 /**
@@ -52,30 +73,30 @@ angular.module('pekoeWorkspaceApp').directive('pekoeDoResize', function() {
 //                resizer();
 //            });
             /*
-            The problem is the initial call to tab-content resize. It's not taking into account the height of the tab nav area.
-            It's fine when the screen is actually resized, but not right prior to that.
-            Will either have to base it on the Bottom of the Tab nav or subtract that amount.
-            Also would be good to call this prior to setting any content - but don't think that's possible.
+             The problem is the initial call to tab-content resize. It's not taking into account the height of the tab nav area.
+             It's fine when the screen is actually resized, but not right prior to that.
+             Will either have to base it on the Bottom of the Tab nav or subtract that amount.
+             Also would be good to call this prior to setting any content - but don't think that's possible.
              */
-
-        },
-        link: function ($scope,$element) {
-            var resizer = function () {
-                //console.log('got call to do resize');
-                // TODO I should probably make this work based on a parent element provided as a parameter.
-                // 20 or so for the 'well' around the tab-content
-                $element.width(angular.element('#work-area').width()-22); // arbitrary -4 to handle margins or borders or something
-                var someMarginOrOther = 20;
-                $element.height(window.innerHeight - angular.element('.tab-content').position().top - someMarginOrOther);
-            };
-
-
-            resizer();
-            // resize directive is attached to #work-area
-            $scope.$on('resize::resize', function() {
-                resizer();
-            });
         }
+        //},
+        //link: function ($scope,$element) {
+        //    //var resizer = function () {
+        //    //    //console.log('got call to do resize');
+        //    //    // TODO I should probably make this work based on a parent element provided as a parameter.
+        //    //    // 20 or so for the 'well' around the tab-content
+        //    //    $element.width(angular.element('#work-area').width()-22); // arbitrary -4 to handle margins or borders or something
+        //    //    var someMarginOrOther = 20 + 36;
+        //    //    $element.height(window.innerHeight - angular.element('.tab-content').position().top - someMarginOrOther);
+        //    //};
+        //
+        //
+        //   //resizer();
+        //    // resize directive is attached to #work-area
+        //    $scope.$on('resize::resize', function() {
+        //        //resizer();
+        //    });
+        //}
     };
 
 

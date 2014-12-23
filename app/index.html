@@ -1,4 +1,5 @@
 <!doctype html>
+<html>
 <head>
     <meta charset="utf-8">
     <title>Pekoe Job Manager</title>
@@ -12,116 +13,109 @@
     <link rel="stylesheet" href="/pekoe-common/dist/css/bootstrap.css"/>
     <!-- build:css({.tmp,app}) styles/main.css -->
     <!--<link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
 
 
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
     <!-- endbuild -->
+    <!--<script src="//use.typekit.net/acp1jya.js"></script>-->
+    <!--<script>try {-->
+        <!--Typekit.load();-->
+    <!--} catch (e) {-->
+    <!--}</script>-->
 </head>
 <body ng-app="pekoeWorkspaceApp" ng-cloak>
 <!-- Add your site or application content here -->
+
 <div id="wrapper" ng-class="[$rootScope.toggled]" class="pekoe-bg"> <!-- Page wrapper -->
+
     <div class="panel" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
         <div>
-            <div class="btn-group pull-right">
-                <!-- Go to edit mode - then either Save or Revert . Save regardless of whether user changed anything. simpler. -->
-                <button type="button" class="btn" ng-if="bc.editmode === false" ng-click="bc.edit()"
-                        title="Edit your bookmarks">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </button>
-                <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.revert()"
-                        title="Don't save changes">
-                    <i class="glyphicon glyphicon-floppy-remove"></i>
-                </button>
-                <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.save()"
-                        title="Save changes to bookmarks">
-                    <i class="glyphicon glyphicon-floppy-disk"></i>
-                </button>
+
+
+            <!--<tabset> &lt;!&ndash; BOOKMARKS tabset &ndash;&gt;-->
+            <!--&lt;!&ndash; while not strictly necessary, using a tabset makes the bookmarks align neatly with the workarea, and may come in handy for other functions &ndash;&gt;-->
+            <!--<tab>-->
+            <!--<tab-heading><em>Bookmarks</em></tab-heading>-->
+            <div class="panel-heading bookmarksHeading"><i class="glyphicon glyphicon-bookmark"></i> Bookmarks</div>
+            <div class="bookmark-buttons">
+                <div>
+                    <!-- Go to edit mode - then either Save or Revert . Save regardless of whether user changed anything. simpler. -->
+                    <button type="button" class="btn" ng-if="bc.editmode === false" ng-click="bc.edit()"
+                            title="Edit your bookmarks">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.revert()"
+                            title="Undo all changes">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </button>
+                    <button type="button" class="btn" ng-if="bc.bookmarks.dirty || bc.editmode" ng-click="bc.save()"
+                            title="Save changes to bookmarks">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>
+                    </button>
+                </div>
             </div>
+            <!--<div class="well well-sm">-->
+            <accordion close-others="oneAtATime">
+                <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
+                    <accordion-group class='bookmarkFolderName' ng-class="{active: group.open}" ng-model="group"
+                                     ng-repeat="group in bc.list"
+                                     is-open="group.open">
+                        <accordion-heading><i class="glyphicon"
+                                              ng-class="{'glyphicon-folder-open': group.open, 'glyphicon-folder-close': !group.open}"></i>{{group.title}}
+                        </accordion-heading>
+                        <ul ui-sortable="bgc.sortableOptions" ng-model="group.items"
+                            class="bookmarks-container list-unstyled"
+                            ng-controller="BookmarksGroupCtrl as bgc"
+                            droppable>
 
-            <tabset> <!-- BOOKMARKS tabset -->
-                <!-- while not strictly necessary, using a tabset makes the bookmarks align neatly with the workarea, and may come in handy for other functions -->
-                <tab>
-                    <tab-heading><em>Bookmarks</em></tab-heading>
-                    <div>{{myUser}}</div>
-                    <div class="well well-sm">
-                        <accordion close-others="oneAtATime">
-                            <div ui-sortable="bc.sortableOptions" ng-model="bc.list">
-                                <accordion-group heading="{{group.title}}" ng-model="group" ng-repeat="group in bc.list"
-                                                 is-open="group.open">
-                                    <ul ui-sortable="bgc.sortableOptions" ng-model="group.items"
-                                        class="bookmarks-container list-unstyled"
-                                        ng-controller="BookmarksGroupCtrl as bgc"
-                                        droppable>
-
-                                        <li ng-disabled="subitem.disabled"
-                                            ng-repeat="subitem in group.items" ng-switch="subitem.type">
-
-                                                <pekoe-input-item ng-switch-when="search"></pekoe-input-item>
-                                                <pekoe-button-item ng-switch-when="html"></pekoe-button-item>
-                                                <pekoe-button-item ng-switch-when="form"></pekoe-button-item>
-                                                <div ng-switch-when="placeholder">
-                                                    <span >Placeholder</span>
-                                                </div>
-                                                <div ng-switch-default>Missing bookmark type: '{{subitem.type}}'</div>
+                            <li ng-disabled="subitem.disabled"
+                                ng-repeat="subitem in group.items" ng-switch="subitem.type">
+                                <pekoe-input-item ng-switch-when="search"></pekoe-input-item>
+                                <pekoe-button-item ng-switch-when="html"></pekoe-button-item>
+                                <pekoe-button-item ng-switch-when="form"></pekoe-button-item>
+                                <div ng-switch-when="placeholder">
+                                    <span>Placeholder</span>
+                                </div>
+                                <div ng-switch-default>Missing bookmark type: '{{subitem.type}}'</div>
 
 
-                                        </li>
-                                    </ul>
-                                </accordion-group>
-                            </div>
-                        </accordion>
-                        <div>
-                            <form class="form-horizontal" role="form" id="addBookmarksFolderForm" ng-if="bc.editmode"
-                                  ng-submit="bc.addGroup()">
-                                <label class="sr-only" for="bc_title">new Bookmarks folder name</label>
-                                <input class="form-control" id="bc_title" ng-model="bc.title" type="text"
-                                       placeholder="New Bookmarks folder"
-                                       title="type a name and press Return to create a new Folder">
-                            </form>
-                        </div>
+                            </li>
+                        </ul>
+                    </accordion-group>
+                </div>
+            </accordion>
+            <div>
+                <form class="form-horizontal" role="form" id="addBookmarksFolderForm" ng-if="bc.editmode"
+                      ng-submit="bc.addGroup()">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                        <label class="sr-only" for="bc_title">new Bookmarks folder name</label>
+                        <input class="form-control" id="bc_title" ng-model="bc.title" type="text"
+                               placeholder="New Bookmarks folder"
+                               title="type a name and press Return to create a new Folder">
                     </div>
-                </tab>
-            </tabset>
+                </form>
+            </div>
+            <!--</div>-->
+            <!--</tab>-->
+            <!--</tabset>-->
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
     <div id="page-content-wrapper"> <!-- MAIN WORKSPACE -->
-        <!-- TODO - make sense of this.
-        The resize directive belongs either on the parent or the children not both
-        Consider creating an UUID which is the name of a function on the parent : f12345... and pass that UUId to the child
-        then the child has restricted and temporary access to the parent function.
-
-        Previously, I generated the IFRAME on the server and then used it to load the rest of the page.
-        Can I somehow pass "this" tab to its frame? And add functionality like "signal close"
-
-        Also, need to change the iframe to a directive so that IT can manage whether to load a Form List or Report or something else.
-        -->
         <div id="work-area" ng-controller="TabsCtrl" class="panel" pekoe-say-resize>
-
-            <div class="btn-group pull-right">            <!-- logout -->
-                <span><logout/></span><!-- in case you miss it - it's logout!! Defined in pekoe_common auth.module -->
-                <!-- bookmark -->
-                <button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"
-                        title="Add a Bookmark for the current tab">
-                    <i class="glyphicon glyphicon-bookmark"></i>
-                </button>
-                <!-- toggle sidebar -->
-                <!--<button type="button" title="Toggle the Bookmarks panel" class="collapsed btn"-->
-                        <!--ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">-->
-                    <!--<i class="fa fa-navicon"></i>-->
-                <!--</button>-->
-            </div>
-
             <tabset><!-- draggable is applied to the LI -->
                 <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" select="activate(tab)"
                      draggable-tab>
-                    <tab-heading>{{tab.title}} <a ng-click="removeTab($index)" href=''><i
-                        class="glyphicon glyphicon-remove"></i></a></tab-heading>
-                    <div class="well well-sm pekoe-well" ng-switch="tab.type" pekoe-do-resize>
+                    <tab-heading><span class="icon"><i class="glyphicon"
+                                                       ng-class="{'glyphicon-folder-open': group.open, 'glyphicon-folder-close': !group.open}"></i></span>{{tab.title}}
+                        <a ng-click="removeTab($index)" href=''><i
+                            class="glyphicon glyphicon-remove-circle"></i></a></tab-heading>
+                    <div class="pekoe-well" ng-switch="tab.type" pekoe-do-resize>
                         <pekoe-form ng-switch-when="form">form here</pekoe-form>
                         <pekoe-frame ng-switch-when="html"></pekoe-frame>
                         <pekoe-frame ng-switch-when="search"></pekoe-frame>
@@ -143,7 +137,23 @@
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
+<div class="pekoeHeader"><span class="appname">PEKOE JOB MANAGER</span>
 
+    <div class="pull-right">
+        <span class="username">Welcome back, {{myUser}}!</span><!-- logout -->
+        <span><logout/></span><!-- in case you miss it - it's logout!! Defined in pekoe_common auth.module -->
+        <!-- bookmark -->
+        <button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"
+                title="Add a Bookmark for the current tab">
+            <i class="glyphicon glyphicon-bookmark"></i>
+        </button>
+        <!-- toggle sidebar -->
+        <!--<button type="button" title="Toggle the Bookmarks panel" class="collapsed btn"-->
+        <!--ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">-->
+        <!--<i class="fa fa-navicon"></i>-->
+        <!--</button>-->
+    </div>
+</div>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -175,8 +185,6 @@
 
 <script src="scripts/pekoe_bookmarks/bookmarks.ctrl.js"></script>
 <script src="scripts/pekoe_auth/auth.service.js"></script>
-<script src="scripts/pekoe_auth/auth.ctrl.js"></script>
-<script src="scripts/pekoe_auth/logout.js"></script>
 <script src="scripts/pekoe_auth/tenant.ctrl.js"></script>
 
 
