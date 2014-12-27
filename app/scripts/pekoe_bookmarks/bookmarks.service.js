@@ -39,11 +39,11 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                     items:[
                         {
                             title: 'Welcome',
-                            type: 'html',
+                            type: 'report',
                             href : '/exist/restxq/pekoe/welcome'},
                         {
                             title: 'Files',
-                            type: 'html',
+                            type: 'folder',
                             href : '/exist/pekoe-app/files.xql'}]}],
             dirty: false
         };
@@ -53,7 +53,9 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         function convertBookmarksFromXML(x) { // x is an Angular Object containing a Document
 
             var groups = x.find('group');
-            if (groups.length === 0) return myBookmarks;
+            if (groups.length === 0) {
+                return myBookmarks;
+            }
             var newBookmarks = {groups:[],dirty: false};
             x.find('group').each(function(){
                 var g = $(this);
@@ -83,9 +85,11 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             var od = (new DOMParser()).parseFromString('<pref for="bookmarks"></pref>', 'text/xml');
             var doc = od.documentElement;
             myBookmarks.groups.forEach(function(e) {
-                if (e.type === 'locked') return;
-                var g = od.createElement("group");
-                var t = od.createElement("title");
+                if (e.type === 'locked') {
+                    return;
+                }
+                var g = od.createElement('group');
+                var t = od.createElement('title');
                 t.textContent = e.title;
                 g.appendChild(t);
                 e.items.forEach(function (el) {
@@ -113,9 +117,9 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 data:bookmarks,
                 type: 'POST',
                 processData: false,
-                contentType: "text/xml",
+                contentType: 'text/xml',
                 headers: {'tenant':$http.defaults.headers.common.tenant},
-                success: function (d,s) {
+                success: function () {
                     myBookmarks.dirty = false;
                 }
             });
@@ -191,7 +195,9 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             }
             try {
                 var bm = {title: tab.title, href: tab.href, type: tab.type};
-                if (tab.params) bm.params = tab.params;
+                if (tab.params) {
+                    bm.params = tab.params;
+                }
                 //var bm = angular.copy(tab); // includes too much - like the frameWindow I've added.
                 grp.items.push(bm);
                 console.log('add to grp', grp);

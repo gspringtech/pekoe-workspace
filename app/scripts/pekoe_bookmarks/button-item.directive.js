@@ -25,16 +25,16 @@ angular.module('pekoeWorkspaceApp.bookmarks')
     .directive('pekoeButtonItem', function () { // always remember to camelCase the name otherwise the directive won't work.
         return {
             restrict: 'E',
-            templateUrl: 'views/button-item.html',
-            controller: function (){
-                //console.log('buttonItem controller element',$element,'$scope',$scope);
+            templateUrl: function (tEl, tAttr) {
+                var template = 'views/button-item.html';
+                switch (tAttr.type) {
+                    case 'folder' : break;
+                    case 'form'   : template = 'views/form-item.html'; break;
+                    case 'report' : template = 'views/report-item.html'; break;
+                }
+                return template;
 
             },
-            replace: true,
-
-            link: function() {
-
-                //console.log("link function ",scope, element);
-            }
+            replace: true
         };
     });

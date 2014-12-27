@@ -68,6 +68,13 @@ angular.module('pekoeWorkspaceApp.tabs')
             tab.frameWindow = frameWindow;
         };
 
+        /*
+        What should happen when the active tab is closed?
+        Option 1 - default: "If this is the last tab, select the previous tab. else, the next tab." (angular ui-bootstrap)
+        Option 2 - go to the previously active tab (maintain a stack of open tabs)
+        Option 3 - go to the tab that opened this one, else Option 1 or Option 2
+        To make this work, I might need to change ui-bootstrap.
+         */
         // The tabs.ctrl .remove method will call this
         myService.closeTab = function (index) { // this index is simply the array index. It changes whenever a tab is closed
             var tab = myService.tabs[index];

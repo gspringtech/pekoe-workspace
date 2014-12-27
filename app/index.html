@@ -73,8 +73,9 @@
                             <li ng-disabled="subitem.disabled"
                                 ng-repeat="subitem in group.items" ng-switch="subitem.type">
                                 <pekoe-input-item ng-switch-when="search"></pekoe-input-item>
-                                <pekoe-button-item ng-switch-when="html"></pekoe-button-item>
-                                <pekoe-button-item ng-switch-when="form"></pekoe-button-item>
+                                <pekoe-button-item ng-switch-when="report" type="report"></pekoe-button-item>
+                                <pekoe-button-item ng-switch-when="folder" type="folder"></pekoe-button-item>
+                                <pekoe-button-item ng-switch-when="form" type="form"></pekoe-button-item>
                                 <div ng-switch-when="placeholder">
                                     <span>Placeholder</span>
                                 </div>
@@ -111,13 +112,19 @@
             <tabset><!-- draggable is applied to the LI -->
                 <tab ng-repeat="tab in tabs" active="tab.active" disabled="tab.disabled" select="activate(tab)"
                      draggable-tab>
-                    <tab-heading><span class="icon"><i class="glyphicon"
-                                                       ng-class="{'glyphicon-folder-open': group.open, 'glyphicon-folder-close': !group.open}"></i></span>{{tab.title}}
+                    <tab-heading>
+                        <span class="icon" ng-if="tab.type == 'folder'">
+                            <i class="glyphicon" ng-class="{'glyphicon-folder-open': tab.active, 'glyphicon-folder-close': !tab.active}"></i>
+                        </span>
+                        <span class="icon" ng-if="tab.type == 'report'"><i class="glyphicon glyphicon-list"></i></span>
+                        <span class="icon" ng-if="tab.type == 'form'"><i class="glyphicon glyphicon-list-alt"></i></span>
+                        {{tab.title}}
                         <a ng-click="removeTab($index)" href=''><i
                             class="glyphicon glyphicon-remove-circle"></i></a></tab-heading>
                     <div class="pekoe-well" ng-switch="tab.type" pekoe-do-resize>
                         <pekoe-form ng-switch-when="form">form here</pekoe-form>
-                        <pekoe-frame ng-switch-when="html"></pekoe-frame>
+                        <pekoe-frame ng-switch-when="report"></pekoe-frame>
+                        <pekoe-frame ng-switch-when="folder"></pekoe-frame>
                         <pekoe-frame ng-switch-when="search"></pekoe-frame>
                         <div ng-switch-default>
                             <em>Missing or incorrect content type provided ({{tab.type}}). Should be one of </em>
