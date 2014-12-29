@@ -162,6 +162,8 @@ logout button:hover {
 .bookmark-buttons .btn {
     background-color: inherit;
     color: white;
+    font-size: 18pt;
+    padding-bottom: 2px;
 }
 
 .panel-default {
@@ -250,7 +252,7 @@ a:hover, a:active { text-decoration:underline; }
 .tabHeadings, .nav-tabs li
 {
     color:#666;
-    font-size:24px;
+    font-size:18px;
     font-weight:100;
 }
 
