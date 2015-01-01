@@ -117,17 +117,41 @@ p, body
 
 .pekoeHeader
 {
-    position: absolute;
-    top:0;left:0;
     background-color:#252525;
     color:#fff;
     height:36px;
+    left:0;
+    line-height:36px;
+    position:absolute;
+    top:0;
     width:100%;
-//    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
-//    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.61);
-    padding: 10px 15px;
 }
+
+.appname { text-transform:uppercase; font-size:18px; }
+
+.pekoeHeaderTxt
+{
+    padding: 0 15px;
+}
+
+.pekoeHeader span
+{
+    display:inline-block;
+    height:36px;
+}
+
+.username
+{
+    border-right:1px solid #333;
+    padding-right:20px;
+}
+
+logout
+{
+    margin-left:20px;
+}
+
 
 
 /* Remove border radius from all buttons, accordions, search boxes etc that have rounded corners, add the class names to this */
@@ -152,6 +176,7 @@ logout button {
 }
 logout button:hover {
     color: white;
+    background-color: #f36007;
 }
 .btn:hover, .btn:focus, .btn.focus {
     color: white;

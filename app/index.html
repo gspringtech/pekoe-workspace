@@ -33,11 +33,6 @@
     <div class="panel" id="sidebar-wrapper" ng-controller="BookmarksCtrl as bc">
         <div>
 
-
-            <!--<tabset> &lt;!&ndash; BOOKMARKS tabset &ndash;&gt;-->
-            <!--&lt;!&ndash; while not strictly necessary, using a tabset makes the bookmarks align neatly with the workarea, and may come in handy for other functions &ndash;&gt;-->
-            <!--<tab>-->
-            <!--<tab-heading><em>Bookmarks</em></tab-heading>-->
             <div class="panel-heading bookmarksHeading"><i class="glyphicon glyphicon-bookmark"></i> Bookmarks</div>
             <div class="bookmark-buttons">
                 <div>
@@ -144,23 +139,34 @@
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
-<div class="pekoeHeader"><span class="appname">PEKOE JOB MANAGER</span>
 
-    <div class="pull-right">
-        <span class="username">Welcome back, {{myUser}}!</span><!-- logout -->
-        <span><logout/></span><!-- in case you miss it - it's logout!! Defined in pekoe_common auth.module -->
-        <!-- bookmark -->
-        <button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"
-                title="Add a Bookmark for the current tab">
-            <i class="glyphicon glyphicon-bookmark"></i>
-        </button>
-        <!-- toggle sidebar -->
-        <!--<button type="button" title="Toggle the Bookmarks panel" class="collapsed btn"-->
-        <!--ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">-->
-        <!--<i class="fa fa-navicon"></i>-->
-        <!--</button>-->
+<div class="pekoeHeader">
+    <div class="pull-left pekoeHeaderTxt">
+        <span class="appname">Pekoe Job Manager</span>
+    </div>
+    <div class="pull-right pekoeHeaderTxt">
+        <span class="username ng-binding">Welcome back, {{myUser}}!</span>
+        <span><logout/></span>
     </div>
 </div>
+<!-- toggle sidebar -->
+<!--<button type="button" title="Toggle the Bookmarks panel" class="collapsed btn"-->
+<!--ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">-->
+<!--<i class="fa fa-navicon"></i>-->
+<!--</button>-->
+
+<!--<button type="button" class="btn" ng-click="bookmark()" ng-if="tabs.length > 0"-->
+<!--title="Add a Bookmark for the current tab">-->
+<!--<i class="glyphicon glyphicon-bookmark"></i>-->
+<!--</button>
+<div class="pekoeHeader"><span class="appname">PEKOE JOB MANAGER</span>
+
+<div class="pull-right">
+<span class="username">Welcome back, {{myUser}}!</span><!-- logout -->
+        <!--<span><logout/></span>&lt;!&ndash; in case you miss it - it's logout!! Defined in  auth.module &ndash;&gt;-->
+        <!-- bookmark -->
+
+
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
