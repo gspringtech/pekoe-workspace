@@ -81,7 +81,7 @@ angular.module('pekoeWorkspaceApp.auth')
     var myLogout = function () {
         $rootScope.$broadcast('authservice::logout');
         init();
-        $http.get('/exist/rest/db/pekoe/logout.xql');
+        $http.get('/exist/rest/db/logout.xql');
         location.reload();
     };
 
