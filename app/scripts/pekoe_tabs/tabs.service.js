@@ -102,12 +102,13 @@ angular.module('pekoeWorkspaceApp.tabs')
             // and when you switch back to it
             // BUT NOT WHEN it's already Active - only the RELOAD below
             if (tab.type !== 'form') {
-                if (tab.frameWindow) {
+                if (tab.frameWindow && tab.frameWindow.location) {
                     tab.frameWindow.location.reload(); // this is really a 'refresh'.
                     console.log('reActivate', tab.title);
                     tab.active = true;
+                } else {
+                    tab.active = true;
                 }
-                else {tab.active = true;}
             }
         };
 

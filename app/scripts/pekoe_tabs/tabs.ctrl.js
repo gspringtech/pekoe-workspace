@@ -45,13 +45,14 @@ angular.module('pekoeWorkspaceApp.tabs')
             $scope.apply();
         };
 
-        $scope.updateHref = function(href) {
-            TabsService.updateCurrentHref(href);
-        }
 
         // this can be called by the content of the iframe!!
         $scope.addTab = function (t){
             TabsService.add(t);
             $scope.$apply(); // otherwise a tab added by the frame won't appear.
+        };
+
+        $scope.removeTab = function (index) {
+            TabsService.closeTab(index);
         };
     }]);
