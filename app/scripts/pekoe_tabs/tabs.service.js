@@ -32,7 +32,7 @@ angular.module('pekoeWorkspaceApp.tabs')
         var tabIndex = function (item) {
             var exists = -1;
             angular.forEach(myService.tabs, function (td, k) {
-                if (td.href === item.href && td.title === item.title) {
+                if (td.title === item.title) {
                     exists = k;
                     return false;
                 }
@@ -78,6 +78,8 @@ angular.module('pekoeWorkspaceApp.tabs')
         // The tabs.ctrl .remove method will call this
         myService.closeTab = function (index) { // this index is simply the array index. It changes whenever a tab is closed
             var tab = myService.tabs[index];
+            var prevTab = tab.openedBy;
+            console.log('want to reactivate',prevTab);
             try {
                 if (tab.type === 'form' && tab.frameWindow && tab.frameWindow.pekoeClose) {
                     tab.frameWindow.pekoeClose();
@@ -87,6 +89,11 @@ angular.module('pekoeWorkspaceApp.tabs')
             } catch (e) {
                 myService.tabs.splice(index,1); // is this sensible?
                 console.warn('ERROR when trying to CLOSE A MANAGED TAB', e);
+            }
+            if (prevTab) {
+                // doesn't seem to work. Need to override tab-close behaviour.
+                //var tab = myService.tabs[prevTab];
+                //myService.reActivate(tab);
             }
         };
         // tabs.ctrl will call this on select
@@ -107,30 +114,33 @@ angular.module('pekoeWorkspaceApp.tabs')
         // Inactivate all tabs, add tab if not existing, activate and refresh if existing and, reload the tab from the bookmark if it is currently active
         // this should not use broadcast
         myService.add = function (bookmark) {
-            console.log('ADD',bookmark.href);
+            //console.log('you asked to add',bookmark.href);
             try {
                 var newTab = angular.copy(bookmark); // Don't want to modify the original bookmark.
                 var current = currentActive(); // index of currently active tab.
 
-                var tIndex = tabIndex(newTab); // is this tab already loaded?
-                //console.log('tIndex',tIndex, ' and current',current);
+                var tIndex = tabIndex(newTab); // is this tab already loaded? Based on TITLE now.
                 setAllInactive();
                 var tab;
                 if (tIndex === -1) { // Not found so Add NEW tab
-                    console.log('... as NEW tab');
+                    //console.log('... as NEW tab');
                     newTab.active = true;
+                    newTab.openedBy = current;
                     myService.tabs.push(newTab);
                 } else if (tIndex === current) { // is the current tab so Reload
-                    console.log('... RELOAD TAB');
+                    //console.log('... RELOAD TAB from original');
                     tab = myService.tabs[tIndex];
+
                     if (tab.type !== 'form') {
-                        tab.frameWindow.location = tab.href;
+                        tab.href = bookmark.href;
+                        tab.frameWindow.location = bookmark.href; // This will revert it to the original
                     }
                     tab.active = true;
                 } else { // found but not current,
+                    //console.log('... REFRESH TAB');
                     tab = myService.tabs[tIndex];
                     tab.active = true;
-                    console.log('... REFRESH TAB');
+
                     //var tab = myService.tabs[tIndex];
                     //tab.frameWindow.location = tab.href;
                     //tab.active = true;

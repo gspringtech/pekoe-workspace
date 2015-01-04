@@ -181,7 +181,6 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         };
 
         function addTabToCurrentGroup(tab) {
-            // TODO make this turn on Edit Mode
             console.log('BookmarksService add tab',tab);
             if (!tab.title || tab.title === '') {
                 console.warn('No title for tab',tab);
@@ -190,7 +189,9 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             var grp = openGroup();
 
             if (tabInItems(tab,grp.items)) {
-                console.warn('Tab already in group');
+                var newName = window.prompt("Bookmark as...", tab.title);
+                tab.title = newName;
+                if (!newName || tabInItems(tab,grp.items)) {return;}
                 return;
             }
             try {
@@ -200,7 +201,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 }
                 //var bm = angular.copy(tab); // includes too much - like the frameWindow I've added.
                 grp.items.push(bm);
-                console.log('add to grp', grp);
+                //console.log('add to grp', grp);
             } catch (e) {console.warn('add error',e);}
             myBookmarks.dirty = true;
         }

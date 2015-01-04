@@ -26,7 +26,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         var self = this;
 
         self.itemCheck = function () {
-            console.log('ITEM CHECK', $scope.group.items.length);
+            //console.log('ITEM CHECK', $scope.group.items.length);
             if ($scope.group.items.length === 0) {
                 var bookmarkGroups = $scope.bc.bookmarks.groups;
                 if (bookmarkGroups.length > 1) {
@@ -75,29 +75,38 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         $scope.$on('BOOKMARKS:EDIT:OFF', function () {
             self.sortableOptions.disabled = true;
         });
-        // this also should be in the service
+
+
+        // this also should be in the service. This IS in the Service. Why is it repeated here?
         this.add = function (tab) {
+            function inList(title) {
+                var items = $scope.group.items, inlist = false;
+                for (var i in items) {
+                    if (items[i].title === title) {
+                        inlist = true;
+                        break;
+                    }
+                }
+                return inlist
+            }
             // TODO - rethink this test. Probably want to check the href of the tab.
             // Then offer the user the option to change the name if the same.
             if (!tab.title || tab.title === '') {
                 return;
             }
             var items = $scope.group.items;
-            var inList = false;
-            for (var i in items) {
-                if (items[i].href === tab.href) {
-                    inList = true;
-                    break;
-                }
-            }
-            if (inList) {
-                console.log('Bookmarks already contains this item');
-                return;
+            var inlist = inList(tab.title);
+
+            if (inlist) {
+                var newName = window.prompt("Bookmark as...", tab.title);
+                if (!newName || inList(newName)) {return;}
+                tab.title = newName;
             }
             // going to add a new bookmark
             $scope.bc.bookmarks.dirty = true;
             $scope.group.items.push(tab);
 
+            // clear out placeholders...
             for (var j in items) {
                 if (items[j].deleteMe) {
                     $scope.group.items.splice(j, 1); // seems a bit risky doing this in a loop.
