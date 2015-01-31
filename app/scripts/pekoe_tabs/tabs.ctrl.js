@@ -54,5 +54,6 @@ angular.module('pekoeWorkspaceApp.tabs')
 
         $scope.removeTab = function (index) {
             TabsService.closeTab(index);
+            return false; // don't let ui.bootstrap.tabs handle the close - do it in my service
         };
     }]);

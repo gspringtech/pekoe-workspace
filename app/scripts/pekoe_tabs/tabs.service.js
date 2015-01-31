@@ -60,7 +60,10 @@ angular.module('pekoeWorkspaceApp.tabs')
         myService.manage = function (tab, frameWindow) {
             if (tab.type === 'form'){ // FORM windows need to have a chance to clean up...
                 var tabCloser = function () { // This will be called by the Form window
+                    // myService.closeTab(tabIndex(tab)); CIRCULAR!
                     myService.tabs.splice(tabIndex(tab), 1);
+                    var pre = myService.tabs[tab.openedBy];
+                    if (pre) {pre.active = true;}
                     $rootScope.$apply();
                 };
                 frameWindow.readyToClose = tabCloser;
@@ -90,11 +93,12 @@ angular.module('pekoeWorkspaceApp.tabs')
                 myService.tabs.splice(index,1); // is this sensible?
                 console.warn('ERROR when trying to CLOSE A MANAGED TAB', e);
             }
+
             if (prevTab) {
-                // doesn't seem to work. Need to override tab-close behaviour.
-                //var tab = myService.tabs[prevTab];
-                //myService.reActivate(tab);
+                var pre = myService.tabs[prevTab];
+                if (pre) {pre.active = true;}
             }
+
         };
         // tabs.ctrl will call this on select
         myService.reActivate = function (tab) {
@@ -105,9 +109,9 @@ angular.module('pekoeWorkspaceApp.tabs')
                 if (tab.frameWindow && tab.frameWindow.location) {
                     tab.frameWindow.location.reload(); // this is really a 'refresh'.
                     console.log('reActivate', tab.title);
-                    tab.active = true;
+                   // tab.active = true;
                 } else {
-                    tab.active = true;
+                    //tab.active = true;
                 }
             }
         };
@@ -151,3 +155,27 @@ angular.module('pekoeWorkspaceApp.tabs')
 
         return myService;
     }]);
+//
+//angular.module('ui.bootstrap.tabs').config(function ($provide){
+//    $provide.decorator('tabsDirective',function ($delegate){
+//        var directive = $delegate[0];
+//        console.log('got directive',directive);
+//        return $delegate;
+//    });
+//
+//});
+//angular.module('pekoeWorkspaceApp.tabs').directive('tabset',function() {
+//    console.log('contsrurting my tabs');
+//    return {
+//
+//        controller: function () {
+//            //this.data = {};
+//            this.remove = function (e) {
+//                console.log('got e', e);
+//            };
+//        },
+//        link : function(scope,iel,iAttr) {
+//            console.log('got scope',scope,'iel',iel,'iAttr',iAttr);
+//        }
+//};
+//});

@@ -1,3 +1,4 @@
+/*global $:false */
 /**
  * Created by alisterpillow on 25/10/2014.
  *
@@ -148,7 +149,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             var newBookmarks = convertBookmarksFromXML(resp.xml);
 
             myBookmarks = (newBookmarks) ? newBookmarks : myBookmarks;
-            console.log(newBookmarks);
+            //console.log(newBookmarks);
 
 
             $rootScope.$broadcast('bookmarks.update');
@@ -189,7 +190,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             var grp = openGroup();
 
             if (tabInItems(tab,grp.items)) {
-                var newName = window.prompt("Bookmark as...", tab.title);
+                var newName = window.prompt('Bookmark as...', tab.title);
                 tab.title = newName;
                 if (!newName || tabInItems(tab,grp.items)) {return;}
                 return;
