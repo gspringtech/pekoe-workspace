@@ -122,11 +122,12 @@
                         <pekoe-frame ng-switch-when="folder"></pekoe-frame>
                         <pekoe-frame ng-switch-when="search"></pekoe-frame>
                         <div ng-switch-default>
-                            <em>Missing or incorrect content type provided ({{tab.type}}). Should be one of </em>
+                            <em>Missing or incorrect content type provided <em>({{tab.type}})</em>. Should be one of </em>
                             <ul>
-                                <li>list</li>
                                 <li>form</li>
-                                <li>html</li>
+                                <li>report</li>
+                                <li>folder</li>
+                                <li>search</li>
                             </ul>
                         </div>
                     </div>
@@ -146,7 +147,7 @@
     </div>
     <div class="pull-right pekoeHeaderTxt">
         <span class="username ng-binding">Welcome back, {{myUser}}!</span>
-        <span><logout/></span>
+        <span><logout/></span><!-- auth module -->
     </div>
 </div>
 <!-- toggle sidebar -->

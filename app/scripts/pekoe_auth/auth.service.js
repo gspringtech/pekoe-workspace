@@ -81,7 +81,7 @@ angular.module('pekoeWorkspaceApp.auth')
     var myLogout = function () {
         $rootScope.$broadcast('authservice::logout');
         init();
-        $http.get('/exist/rest/db/logout.xql');
+        $http.get('/exist/pekoe-app/logout.xql');
         location.reload();
     };
 
@@ -90,7 +90,7 @@ angular.module('pekoeWorkspaceApp.auth')
     }
 
     function tenantUpdate(){
-        console.log('set tenant an user in tenantUpdate');
+        //console.log('set tenant and user in tenantUpdate');
         $cookieStore.put('tenant',myTenant.key);
         $http.defaults.headers.common.tenant = myTenant.key;
         window.pekoeTenant = myTenant;
