@@ -11,11 +11,8 @@
     <!-- endbower -->
     <!-- endbuild -->
     <link rel="stylesheet" href="/pekoe-common/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/pekoe-common/dist/font-awesome/css/font-awesome.min.css"/>
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <!--<link rel="stylesheet" href="/pekoe_common/dist/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
-
-
     <link rel="stylesheet" href="styles/simple-sidebar.css">
     <link rel="stylesheet" href="styles/pekoe.css">
     <!-- endbuild -->
@@ -67,7 +64,7 @@
 
                             <li ng-disabled="subitem.disabled"
                                 ng-repeat="subitem in group.items" ng-switch="subitem.type">
-                                <pekoe-input-item ng-switch-when="search"></pekoe-input-item>
+                                <pekoe-input-item  ng-switch-when="search"></pekoe-input-item>
                                 <pekoe-button-item ng-switch-when="report" type="report"></pekoe-button-item>
                                 <pekoe-button-item ng-switch-when="folder" type="folder"></pekoe-button-item>
                                 <pekoe-button-item ng-switch-when="form" type="form"></pekoe-button-item>
@@ -112,7 +109,7 @@
                             <i class="glyphicon" ng-class="{'glyphicon-folder-open': tab.active, 'glyphicon-folder-close': !tab.active}"></i>
                         </span>
                         <span class="icon" ng-if="tab.type == 'report'"><i class="glyphicon glyphicon-list"></i></span>
-                        <span class="icon" ng-if="tab.type == 'form'"><i class="glyphicon glyphicon-list-alt"></i></span>
+                        <span class="icon" ng-if="tab.type == 'form'"><i class="fa fa-tasks"></i></span>
                         {{tab.title}}
                         <a ng-click="removeTab($index)" href=''><i
                             class="glyphicon glyphicon-remove-circle"></i></a></tab-heading>
@@ -121,15 +118,7 @@
                         <pekoe-frame ng-switch-when="report"></pekoe-frame>
                         <pekoe-frame ng-switch-when="folder"></pekoe-frame>
                         <pekoe-frame ng-switch-when="search"></pekoe-frame>
-                        <div ng-switch-default>
-                            <em>Missing or incorrect content type provided <em>({{tab.type}})</em>. Should be one of </em>
-                            <ul>
-                                <li>form</li>
-                                <li>report</li>
-                                <li>folder</li>
-                                <li>search</li>
-                            </ul>
-                        </div>
+
                     </div>
                 </tab>
 

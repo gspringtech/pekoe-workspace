@@ -26,5 +26,12 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         this.click = function (){
             TabsService.add($scope.subitem);
         };
+        this.open = function($event) {
+            console.log('GOT OPEN')
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            this.opened = true;
+        };
   }]);
 

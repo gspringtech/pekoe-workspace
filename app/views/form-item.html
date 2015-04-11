@@ -1,6 +1,6 @@
 <div class="btn btn-block bookmark" ng-controller="BookmarksitemCtrl as bmi"
      ng-click="bc.editmode || bmi.click()" title="{{subitem.href}}">
-    <span class="icon"><i class="glyphicon glyphicon-list-alt" ></i></span>
+    <span class="icon"><i class="fa fa-tasks" ></i></span>
     <span ng-model="subitem.title" ng-attr-contenteditable="{{bc.editmode}}" ng-bind="subitem.title"></span>
     <a ng-click="bgc.deleteMe($index); $event.stopPropagation();"
        ng-if="bc.editmode"

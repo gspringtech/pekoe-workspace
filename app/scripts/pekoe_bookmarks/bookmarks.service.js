@@ -65,12 +65,15 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 newBookmarks.groups.push(group);
                 g.find('item').each(function () {
                     var i = $(this);
-                    group.items.push({
+                    var b = {
                         title:  i.find('title').text(),
                         href:   i.find('href').text(),
                         type:   i.find('type').text(),
                         active: true //i.find('active').text() === 'true'
-                    });
+                    };
+                    var param = i.find('param'); // TODO might also want to test for type=search
+                    if (param.text()) {b.param = param.text();}
+                    group.items.push(b);
                 });
             });
             return newBookmarks;
@@ -98,6 +101,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                     item.appendChild(newEl(od,'title',el.title));
                     item.appendChild(newEl(od,'href',el.href));
                     item.appendChild(newEl(od,'type',el.type));
+                    if (el.param) {item.appendChild(newEl(od,'param',el.param));}
                     g.appendChild(item);
                 });
                 doc.appendChild(g);
@@ -181,11 +185,13 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             return inItems;
         };
 
+        // TODO THIS ONE DOESN'T APPEAR TO BE USED. SEE bookmarks.group.ctrl.js
         function addTabToCurrentGroup(tab) {
             console.log('BookmarksService add tab',tab);
             if (!tab.title || tab.title === '') {
+                tab.title = window.prompt('Bookmark as...', tab.title);
                 console.warn('No title for tab',tab);
-                return;
+                //return;
             } // must have a title
             var grp = openGroup();
 
@@ -197,8 +203,8 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             }
             try {
                 var bm = {title: tab.title, href: tab.href, type: tab.type};
-                if (tab.params) {
-                    bm.params = tab.params;
+                if (tab.param) {
+                    bm.param = tab.param;
                 }
                 //var bm = angular.copy(tab); // includes too much - like the frameWindow I've added.
                 grp.items.push(bm);

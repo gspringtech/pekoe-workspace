@@ -78,6 +78,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
 
 
         // this also should be in the service. This IS in the Service. Why is it repeated here?
+        // see also pekoe_tabs/draggable
         this.add = function (tab) {
             console.log('Bookmarks GROUP add',tab);
             function inList(title) {
@@ -93,7 +94,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             // TODO - rethink this test. Probably want to check the href of the tab.
             // Then offer the user the option to change the name if the same.
             if (!tab.title || tab.title === '') {
-                return;
+                tab.title = window.prompt('Bookmark as...','');
             }
             var items = $scope.group.items;
             var inlist = inList(tab.title);

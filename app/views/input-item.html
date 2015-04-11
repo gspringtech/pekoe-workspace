@@ -2,9 +2,9 @@
     <form class="form-horizontal" role="form">
         <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-            <input class="form-control"  type="text"
-               placeholder="{{subitem.title}}"
-               >
+            <input  class="form-control"  type="text" name="{{subitem.param}}"
+               placeholder="{{subitem.title}}">
+
         </div>
     </form>
 
@@ -12,4 +12,18 @@
        ng-if="bc.editmode"
        href=''><i
         class="glyphicon glyphicon-remove"></i></a>
+    <!--
+tried this ...
+<div class="input-group" ng-switch="subitem.param">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+            <input ng-switch-default="" class="form-control"  type="text" name="{{subitem.param}}"
+               placeholder="{{subitem.title}}">
+            <input ng-switch-when="date" ng-model="bmi.dt" datepicker-popup="yyyy-MM-dd" type="text" class="form-control" is-open="bmi.opened" min-date="minDate" max-date="'2015-06-22'"  date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span ng-switch-when="date"  class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="bmi.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+        </div>
+
+-->
 </div>
+

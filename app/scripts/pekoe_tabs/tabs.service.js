@@ -138,7 +138,10 @@ angular.module('pekoeWorkspaceApp.tabs')
 
                     if (tab.type !== 'form') {
                         tab.href = bookmark.href;
-                        tab.frameWindow.location = bookmark.href; // This will revert it to the original
+                        if (tab.frameWindow){
+                            tab.frameWindow.location = bookmark.href; // This will revert it to the original
+                        }
+
                     }
                     tab.active = true;
                 } else { // found but not current,

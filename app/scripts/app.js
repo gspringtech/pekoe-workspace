@@ -48,7 +48,7 @@ angular
         $httpProvider.interceptors.push('xmlHttpInterceptor');
     })
   .run(function($rootScope,AuthService){
-      $rootScope.tenant = AuthService.getTenant(); // This is my bootstrap call. TODO make this the canonical source (e.g. for cm) - if Set, no need to Get.
+      $rootScope.tenant = AuthService.getTenant(); // This is my bootstrap call.
   });
 
 /*
