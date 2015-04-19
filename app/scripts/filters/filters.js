@@ -40,6 +40,11 @@ angular.module('pekoeWorkspaceApp')
             return $sce.trustAsResourceUrl(tab.href);
         };
     }])
+    .filter('hrefpath', function (){
+        return function (input){
+            return (input.indexOf('exist/') === -1) ? input : input.substring(input.indexOf('exist/') + 5 );
+        };
+    })
     .filter('formUrl',['$sce', function ($sce){
         return function (tab){
 //            var path = (tab.collection) ? '?collection=' + tab.collection : '';
