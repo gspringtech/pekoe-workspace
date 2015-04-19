@@ -21,7 +21,7 @@
 
  */
 angular.module('pekoeWorkspaceApp.tabs')
-    .service('TabsService', ['$rootScope', function ($rootScope) {
+    .service('TabsService', ['$rootScope','$timeout', function ($rootScope,$timeout) {
         var myService = {};
         var setAllInactive = function () {
             angular.forEach(myService.tabs, function (td) {
@@ -64,7 +64,7 @@ angular.module('pekoeWorkspaceApp.tabs')
                     myService.tabs.splice(tabIndex(tab), 1);
                     var pre = myService.tabs[tab.openedBy];
                     if (pre) {pre.active = true;}
-                    $rootScope.$apply();
+                    $rootScope.$apply();    
                 };
                 frameWindow.readyToClose = tabCloser;
             }
@@ -83,14 +83,19 @@ angular.module('pekoeWorkspaceApp.tabs')
             var tab = myService.tabs[index];
             var prevTab = tab.openedBy;
             console.log('want to reactivate',prevTab);
+
             try {
                 if (tab.type === 'form' && tab.frameWindow && tab.frameWindow.pekoeClose) {
-                    tab.frameWindow.pekoeClose();
+                    // need to cancel at this point.
+                    $timeout(function () {
+                        tab.frameWindow.pekoeClose();
+                    });
+                    return false;
                 } else { // just close it
                     myService.tabs.splice(index, 1);
                 }
             } catch (e) {
-                myService.tabs.splice(index,1); // is this sensible?
+                //myService.tabs.splice(index,1); // is this sensible?
                 console.warn('ERROR when trying to CLOSE A MANAGED TAB', e);
             }
 
