@@ -81,8 +81,13 @@ angular.module('pekoeWorkspaceApp.auth')
     var myLogout = function () {
         $rootScope.$broadcast('authservice::logout');
         init();
-        $http.get('/exist/pekoe-app/logout.xql');
-        location.reload();
+        var modalInstance = $modal.open({
+            template: '<div class="modal-header"><h2>Closing your files...</h2></div>'
+        });
+        $http.get('/exist/pekoe-app/logout.xql').success(function () {
+            location.reload();
+        });
+        //location.reload();
     };
 
     function getTenants() {
