@@ -27,7 +27,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             TabsService.add($scope.subitem);
         };
         this.open = function($event) {
-            console.log('GOT OPEN')
+            //console.log('GOT OPEN')
             $event.preventDefault();
             $event.stopPropagation();
 

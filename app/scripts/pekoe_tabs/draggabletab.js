@@ -34,6 +34,7 @@ angular.module('pekoeWorkspaceApp')
       link: function postLink(scope, element, attrs) {
           attrs.$set('draggable',true);
           element.on('dragstart', function (ev){
+              //$rootScope.$broadcast('event:tab-drag-start');
               ev.originalEvent.dataTransfer.setData('application/json',angular.toJson(scope.tab));
 
           });
@@ -67,7 +68,7 @@ angular.module('pekoeWorkspaceApp')
                     element.parent().removeClass('bg-success');
                 })
                 .on('drop', function (ev){
-                        console.log('got drop');
+                        //console.log('got drop');
                     ev.preventDefault();
                     element.parent().removeClass('bg-success');
                     var transferredData = ev.originalEvent.dataTransfer.getData('application/json');

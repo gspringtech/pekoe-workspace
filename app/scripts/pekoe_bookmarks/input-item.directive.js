@@ -41,7 +41,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
 
                 });
                 inp.on('keyup',function (e){
-                        if (e.keyCode == 13) {
+                        if (e.keyCode === 13) {
                             var tab = {title:bookmark.title, type:'search'};
                             tab.href = bookmark.href + '&' + bookmark.param + '=' + this.value;
                             TabsService.add(tab);

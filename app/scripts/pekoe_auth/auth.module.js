@@ -26,7 +26,7 @@ angular.module('pekoeWorkspaceApp.auth', [])
         return function (scope, elem, attrs) {
             // Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY
             elem.prop('method', 'POST');
-            console.log('fixing autofill');
+            //console.log('fixing autofill');
             // Fix autofill issues where Angular doesn't know about autofilled inputs
             if (attrs.ngSubmit) {
 
@@ -47,7 +47,7 @@ angular.module('pekoeWorkspaceApp.auth', [])
             restrict: 'E',
             link: function postLink(scope) {
                 scope.logout = function () {
-                    console.log('you clicked logout');
+                    //console.log('you clicked logout');
                     AuthService.logout();
                 };
             }

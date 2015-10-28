@@ -81,8 +81,8 @@ angular.module('pekoeWorkspaceApp.auth')
     var myLogout = function () {
         $rootScope.$broadcast('authservice::logout');
         init();
-        var modalInstance = $modal.open({
-            template: '<div class="modal-header"><h2>Closing your files...</h2></div>'
+        $modal.open({
+            template: '<div class="modal-header"><h2>Closing your files... please wait a moment.</h2></div>'
         });
         $http.get('/exist/pekoe-app/logout.xql').success(function () {
             location.reload();
@@ -137,7 +137,7 @@ angular.module('pekoeWorkspaceApp.auth')
                     background: 'static',
                     resolve: {
                         tenants: function () {
-                            console.log('Got my tenants',myTenants);
+                            //console.log('Got my tenants',myTenants);
                             return myTenants;
                         },
                         tenant: function () {
@@ -167,13 +167,13 @@ angular.module('pekoeWorkspaceApp.auth')
     }
 
     function loginSucceeded(user) {
-        console.log('loginsucceeded for',user);
+        //console.log('loginsucceeded for',user);
         myUser = user;
         $rootScope.myUser = user;
         // because I passed the myUser object in to the modal, its id has been updated
         open = false;
         // this doesn't seem to run
-        console.log('authService.loginConfirmed()');
+        //console.log('authService.loginConfirmed()');
         authService.loginConfirmed();
 
     }
@@ -188,7 +188,7 @@ angular.module('pekoeWorkspaceApp.auth')
 
     function showLogin() {
         //if (modalInstance) {console.log("Instance already exists of this Modal"); return;}
-        console.log('going to show login',$modal, open);
+        //console.log('going to show login',$modal, open);
         if (!open) {
             open = true;
             var modalInstance = $modal.open({
@@ -266,7 +266,7 @@ angular.module('pekoeWorkspaceApp.auth')
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;'} })
                 .then(
                     function (){
-                        console.log('got a result');
+                        //console.log('got a result');
                         $modalInstance.close($scope.user);
                     },
                     function (rejected){

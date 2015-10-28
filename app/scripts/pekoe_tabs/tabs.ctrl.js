@@ -27,7 +27,7 @@ angular.module('pekoeWorkspaceApp.tabs')
     .controller('TabsCtrl', ['TabsService', '$scope','BookmarksService', function (TabsService, $scope, BookmarksService) {
         // http://kirkbushell.me/when-to-use-directives-controllers-or-services-in-angular/
         // thanks to http://odetocode.com/blogs/scott/archive/2013/08/14/dynamic-tabs-with-angularjs-and-ui-bootstrap.aspx
-        console.log('in tabs ctrl');
+        //console.log('in tabs ctrl');
         // Need to remove $scope and replace with 'this'
         // Also, send everything to TabsService
         $scope.tabs = TabsService.tabs;

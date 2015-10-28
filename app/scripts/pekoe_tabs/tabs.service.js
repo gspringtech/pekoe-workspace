@@ -64,7 +64,7 @@ angular.module('pekoeWorkspaceApp.tabs')
                     myService.tabs.splice(tabIndex(tab), 1);
                     var pre = myService.tabs[tab.openedBy];
                     if (pre) {pre.active = true;}
-                    $rootScope.$apply();    
+                    $rootScope.$apply();
                 };
                 frameWindow.readyToClose = tabCloser;
             }
@@ -82,7 +82,7 @@ angular.module('pekoeWorkspaceApp.tabs')
         myService.closeTab = function (index) { // this index is simply the array index. It changes whenever a tab is closed
             var tab = myService.tabs[index];
             var prevTab = tab.openedBy;
-            console.log('want to reactivate',prevTab);
+            //console.log('want to reactivate',prevTab);
 
             try {
                 if (tab.type === 'form' && tab.frameWindow && tab.frameWindow.pekoeClose) {
@@ -113,7 +113,7 @@ angular.module('pekoeWorkspaceApp.tabs')
             if (tab.type !== 'form') {
                 if (tab.frameWindow && tab.frameWindow.location) {
                     tab.frameWindow.location.reload(); // this is really a 'refresh'.
-                    console.log('reActivate', tab.title);
+                    //console.log('reActivate', tab.title);
                    // tab.active = true;
                 } else {
                     //tab.active = true;

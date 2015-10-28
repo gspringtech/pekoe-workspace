@@ -51,7 +51,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
                 }
             },
             remove: function () {
-                console.log('GOT REMOVE EVENT ');
+                //console.log('GOT REMOVE EVENT ');
                 self.itemCheck();
             },
             axis: 'y',
@@ -80,7 +80,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
         // this also should be in the service. This IS in the Service. Why is it repeated here?
         // see also pekoe_tabs/draggable
         this.add = function (tab) {
-            console.log('Bookmarks GROUP add',tab);
+            //console.log('Bookmarks GROUP add',tab);
             function inList(title) {
                 var items = $scope.group.items, inlist = false;
                 for (var i in items) {

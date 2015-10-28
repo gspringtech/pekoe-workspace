@@ -130,6 +130,15 @@ angular.module('pekoeWorkspaceApp.bookmarks')
             });
         }
 
+        // I want to make the currently open group "glow" when tab-drag starts
+        //$rootScope.$on('event:tab-drag-start', function() {
+            // how do I update the css?
+            // probably want to apply a directive to the open group.
+            // will need a "glow" directive
+            //console.log('Got Drag Start event');
+            // this works for Tabs but not for the List
+            // the list can only broadcast to the Tab.
+        //});
         $rootScope.$on('tenant.update', function () { // Broadcast from auth.service
             getBookmarks();
         });
@@ -187,7 +196,7 @@ angular.module('pekoeWorkspaceApp.bookmarks')
 
         // TODO THIS ONE DOESN'T APPEAR TO BE USED. SEE bookmarks.group.ctrl.js
         function addTabToCurrentGroup(tab) {
-            console.log('BookmarksService add tab',tab);
+            //console.log('BookmarksService add tab',tab);
             if (!tab.title || tab.title === '') {
                 tab.title = window.prompt('Bookmark as...', tab.title);
                 console.warn('No title for tab',tab);
