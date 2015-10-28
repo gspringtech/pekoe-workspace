@@ -47,8 +47,10 @@ angular
 //        $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('xmlHttpInterceptor');
     })
-  .run(function($rootScope,AuthService){
-      $rootScope.tenant = AuthService.getTenant(); // This is my bootstrap call.
+  .run(function($rootScope,$cookieStore, AuthService){
+        $cookieStore.put('screenx',screen.width);
+        $cookieStore.put('screeny',screen.height);
+        $rootScope.tenant = AuthService.getTenant(); // This is my bootstrap call.
   });
 
 /*
