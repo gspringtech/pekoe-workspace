@@ -141,12 +141,19 @@ p, body
     height:36px;
 }
 
+.pekoeHeaderTxt .btn {
+    background-color: inherit;
+}
+
 .username
 {
     border-right:1px solid #333;
     padding-right:20px;
 }
 
+.username.toggled {
+    display:none;
+}
 logout
 {
     margin-left:20px;

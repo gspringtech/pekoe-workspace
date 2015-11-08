@@ -145,10 +145,15 @@
 <div class="pekoeHeader">
     <div class="pull-left pekoeHeaderTxt">
         <span class="appname">Pekoe Job Manager</span>
+        <button title="Toggle the Bookmarks panel" class="btn"
+                ng-click="$rootScope.toggled = ($rootScope.toggled === 'toggled') ? '' : 'toggled'">
+            <i class="fa fa-navicon"></i>
+        </button>
     </div>
     <div class="pull-right pekoeHeaderTxt" ng-cloak>
-        <span class="username ng-binding" ng-cloak>Welcome back, {{myUser}}!</span>
+        <span class="username ng-binding"  ng-class="[$rootScope.toggled]" ng-cloak>Welcome back, {{myUser}}!</span>
         <span><logout/></span><!-- auth module -->
+
     </div>
 </div>
 <!-- toggle sidebar -->
