@@ -1,10 +1,13 @@
 <div class="btn-block bookmark" ng-controller="BookmarksitemCtrl as bmi">
     <form class="form-horizontal" role="form">
-        <div class="input-group" title="{{subitem.title}}">
+        <div ng-hide="subitem.param === 'date'" class="input-group" title="{{subitem.title}}">
             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-            <input  class="form-control"  type="text" name="{{subitem.param}}"
-               placeholder="{{subitem.title}}">
-
+            <input class="form-control"  type="{{subitem.param}}" name="{{subitem.param}}"
+               placeholder="{{subitem.title}}" >
+        </div>
+        <div ng-hide="subitem.param === 'text'" class="input-group" title="Date for {{subitem.title}}">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <input name="{{subitem.param}}" placeholder="{{subitem.title}}" ng-click="bmi.open($event)" type="text" class="form-control" datepicker-append-to-body="true" datepicker-popup="" ng-model="bmi.v" is-open="bmi.opened"  ng-required="false" close-text="Close" />
         </div>
     </form>
 

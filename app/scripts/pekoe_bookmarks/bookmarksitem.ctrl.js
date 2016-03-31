@@ -23,15 +23,14 @@
 
 angular.module('pekoeWorkspaceApp.bookmarks')
   .controller('BookmarksitemCtrl', ['$scope','TabsService', function ($scope, TabsService) {
-        this.click = function (){
-            TabsService.add($scope.subitem);
-        };
-        this.open = function($event) {
-            //console.log('GOT OPEN')
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            this.opened = true;
-        };
+	this.click = function (){
+		TabsService.add($scope.subitem);
+	};
+	  this.opened = false;
+	  this.open = function($event) {
+		  $event.preventDefault();
+		  $event.stopPropagation();
+		  this.opened = true;
+	  };
   }]);
 
