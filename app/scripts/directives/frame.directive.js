@@ -26,8 +26,9 @@ angular.module('pekoeWorkspaceApp')
             controller: function ($element,$scope){
                 //console.log('frame contrller element',$element,'$scope',$scope);
                 $element.get(0).onload = function (e){
-//                    console.log('FRAME IS LOADED',e);
+                    //console.log('FRAME IS LOADED',e);
                     $scope.frameLoaded = true;
+                    $scope.tab.reloading = false;
                     var fr = e.target.contentWindow;
                     TabsService.manage($scope.tab, fr);
                     //if (fr.location.pathname === '/exist/restxq/login') {
