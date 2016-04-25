@@ -34,7 +34,18 @@ angular.module('pekoeWorkspaceApp.tabs')
 //
 //        });
         $scope.activate = function (t) { // the tab is the {title, href, type}
-            TabsService.reActivate(t);
+            //console.log('tabs.ctr reactivate',t);
+            //console.log(t.frame)
+            //TabsService.reActivate(t);
+
+            // the tabs service reActivate method will set reloading to true (to prevent a second call)
+            // the frame directive will set this to false after the frame is loaded
+            if (!t.reloading) {
+                //console.log('tabs.ctr reactivate',t);
+                TabsService.reActivate(t);
+            }
+            //else { console.log('Not reactivating');}
+
             //console.log('GOT ACTIVATE ON ', t.title); // activate is called on initial load. I got 3 events for the second tab
             // so the FORM and the LIST are calling this method twice. Why?
         };

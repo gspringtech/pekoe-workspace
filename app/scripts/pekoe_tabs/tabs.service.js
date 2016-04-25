@@ -61,10 +61,10 @@ angular.module('pekoeWorkspaceApp.tabs')
             if (tab.type === 'form'){ // FORM windows need to have a chance to clean up...
                 var tabCloser = function () { // This will be called by the Form window
                     // myService.closeTab(tabIndex(tab)); CIRCULAR!
-                    myService.tabs.splice(tabIndex(tab), 1);
-                    var pre = myService.tabs[tab.openedBy];
+                    myService.tabs.splice(tabIndex(tab), 1); // this is the real "close"
+                    var pre = myService.tabs[tab.openedBy]; // this is the tab that was previously open - usually the 'List' view
                     if (pre) {pre.active = true;}
-                    $rootScope.$apply();
+                    $rootScope.$apply(); // this will cause that previous tab to be reactivated.
                 };
                 frameWindow.readyToClose = tabCloser;
             }
@@ -83,7 +83,9 @@ angular.module('pekoeWorkspaceApp.tabs')
             var tab = myService.tabs[index];
             var prevTab = tab.openedBy;
             //console.log('want to reactivate',prevTab);
-
+            // MAYBE I should use this 'pekoeClose' call everywhere.
+            // It provides an opportunity for the content frame to clean up before closing.
+			// I need it for the new Letter-opener system also.
             try {
                 if (tab.type === 'form' && tab.frameWindow && tab.frameWindow.pekoeClose) {
                     // need to cancel at this point.
@@ -112,8 +114,9 @@ angular.module('pekoeWorkspaceApp.tabs')
             // BUT NOT WHEN it's already Active - only the RELOAD below
             if (tab.type !== 'form') {
                 if (tab.frameWindow && tab.frameWindow.location) {
-                    tab.frameWindow.location.reload(); // this is really a 'refresh'.
                     //console.log('reActivate', tab.title);
+                    tab.frameWindow.location.reload(); // this is really a 'refresh'.
+                    tab.reloading = true;
                    // tab.active = true;
                 } else {
                     //tab.active = true;
